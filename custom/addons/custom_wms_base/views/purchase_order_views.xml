@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_purchase_order_form_hide_rfq_send" model="ir.ui.view">
+        <field name="name">purchase.order.form.hide.rfq.send</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_confirm_and_open_receipt"
+                    type="object"
+                    string="确认并进入入库"
+                    class="btn-primary"
+                    invisible="state not in ('draft', 'sent', 'to approve')"/>
+                <button name="action_open_next_receipt"
+                    type="object"
+                    string="下一步：去采购入库"
+                    class="btn-primary"
+                    invisible="state not in ('purchase', 'done')"/>
+            </xpath>
+            <xpath expr="//button[@name='action_rfq_send' and contains(@context, &quot;'send_rfq':True&quot;)]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_purchase_order_form_security_labels" model="ir.ui.view">
+        <field name="name">purchase.order.form.security.labels</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='button_cancel']" position="attributes">
+                <attribute name="groups">base.group_system,custom_wms_base.group_wms_boss</attribute>
+            </xpath>
+            <xpath expr="//button[@name='button_draft']" position="attributes">
+                <attribute name="groups">base.group_system,custom_wms_base.group_wms_boss</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

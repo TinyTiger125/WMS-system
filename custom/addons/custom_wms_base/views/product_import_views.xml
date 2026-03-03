@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_custom_product_import_wizard_form" model="ir.ui.view">
+        <field name="name">custom.product.import.wizard.form</field>
+        <field name="model">custom.product.import.wizard</field>
+        <field name="arch" type="xml">
+            <form string="商品批量导入">
+                <group>
+                    <group>
+                        <button name="action_download_template" type="object" string="下载导入模板" class="oe_highlight"/>
+                        <field name="upload_file" filename="upload_filename"/>
+                        <field name="upload_filename" invisible="1"/>
+                    </group>
+                    <group>
+                        <field name="result_note" readonly="1" widget="text"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="action_import_products" type="object" string="开始导入" class="oe_highlight"/>
+                    <button special="cancel" string="关闭"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_custom_product_import_wizard" model="ir.actions.act_window">
+        <field name="name">商品批量导入</field>
+        <field name="res_model">custom.product.import.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

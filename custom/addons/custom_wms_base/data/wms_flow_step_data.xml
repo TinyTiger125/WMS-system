@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="wms_flow_product_to_purchase" model="custom.wms.flow.step">
+        <field name="sequence">10</field>
+        <field name="name">商品登记后去采购下单</field>
+        <field name="flow_entry">product_to_purchase</field>
+        <field name="role_scope">all</field>
+        <field name="source_model">product.template</field>
+        <field name="trigger_key">product_to_purchase</field>
+        <field name="action_id" ref="custom_wms_base.action_custom_wms_purchase_flow"/>
+        <field name="action_xmlid">custom_wms_base.action_custom_wms_purchase_flow</field>
+        <field name="description">商品页点击“下一步：采购下单”时生效。</field>
+    </record>
+
+    <record id="wms_flow_product_to_sales" model="custom.wms.flow.step">
+        <field name="sequence">20</field>
+        <field name="name">商品登记后去销售下单</field>
+        <field name="flow_entry">product_to_sales</field>
+        <field name="role_scope">all</field>
+        <field name="source_model">product.template</field>
+        <field name="trigger_key">product_to_sales</field>
+        <field name="action_id" ref="custom_wms_base.action_custom_wms_sales_flow"/>
+        <field name="action_xmlid">custom_wms_base.action_custom_wms_sales_flow</field>
+        <field name="description">商品页点击“下一步：销售下单”时生效。</field>
+    </record>
+
+    <record id="wms_flow_purchase_to_receipt" model="custom.wms.flow.step">
+        <field name="sequence">30</field>
+        <field name="name">采购确认后去采购入库</field>
+        <field name="flow_entry">po_to_receipt</field>
+        <field name="role_scope">all</field>
+        <field name="source_model">purchase.order</field>
+        <field name="trigger_key">po_to_receipt</field>
+        <field name="source_states">purchase,done</field>
+        <field name="action_id" ref="custom_wms_base.action_custom_wms_receipts_flow"/>
+        <field name="action_xmlid">custom_wms_base.action_custom_wms_receipts_flow</field>
+        <field name="description">采购单点击“下一步：去采购入库”时生效。</field>
+    </record>
+
+    <record id="wms_flow_sale_to_delivery" model="custom.wms.flow.step">
+        <field name="sequence">40</field>
+        <field name="name">销售确认后去销售出库</field>
+        <field name="flow_entry">so_to_delivery</field>
+        <field name="role_scope">all</field>
+        <field name="source_model">sale.order</field>
+        <field name="trigger_key">so_to_delivery</field>
+        <field name="source_states">sale,done</field>
+        <field name="action_id" ref="custom_wms_base.action_custom_wms_deliveries_flow"/>
+        <field name="action_xmlid">custom_wms_base.action_custom_wms_deliveries_flow</field>
+        <field name="description">销售单点击“下一步：去销售出库”时生效。</field>
+    </record>
+
+    <record id="wms_flow_inbound_to_sales" model="custom.wms.flow.step">
+        <field name="sequence">50</field>
+        <field name="name">采购入库完成后去销售订单</field>
+        <field name="flow_entry">inbound_done_to_sales</field>
+        <field name="role_scope">all</field>
+        <field name="source_model">stock.picking</field>
+        <field name="trigger_key">inbound_done_to_sales</field>
+        <field name="source_states">done</field>
+        <field name="action_id" ref="custom_wms_base.action_custom_wms_sales_flow"/>
+        <field name="action_xmlid">custom_wms_base.action_custom_wms_sales_flow</field>
+        <field name="description">入库单完成后可直接跳转销售下单。</field>
+    </record>
+</odoo>

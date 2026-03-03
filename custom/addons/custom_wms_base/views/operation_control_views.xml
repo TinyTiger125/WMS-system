@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_sale_order_tree_wms_safe" model="ir.ui.view">
+        <field name="name">sale.order.tree.wms.safe</field>
+        <field name="model">sale.order</field>
+        <field name="arch" type="xml">
+            <list string="销售订单" decoration-muted="state == 'cancel'">
+                <field name="currency_id" column_invisible="True"/>
+                <field name="name" string="数量" decoration-bf="1"/>
+                <field name="date_order" string="订单日期"/>
+                <field name="partner_id" string="客户"/>
+                <field name="user_id" string="销售人员" widget="many2one_avatar_user" optional="show"/>
+                <field name="amount_total" string="总计" widget="monetary" options="{'currency_field': 'currency_id'}" optional="show"/>
+                <field name="wms_margin_amount" string="预计毛利" widget="monetary" options="{'currency_field': 'currency_id'}" optional="show"/>
+                <field name="wms_margin_rate" string="毛利率(%)" optional="show"/>
+                <field name="state" string="状态" widget="badge"
+                    decoration-success="state == 'sale'"
+                    decoration-info="state == 'draft'"
+                    decoration-primary="state == 'sent'"/>
+                <field name="write_uid" string="最近操作人" optional="hide"/>
+                <field name="write_date" string="最近操作时间" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_purchase_order_tree_wms_safe" model="ir.ui.view">
+        <field name="name">purchase.order.tree.wms.safe</field>
+        <field name="model">purchase.order</field>
+        <field name="arch" type="xml">
+            <list string="采购订单" decoration-muted="state == 'cancel'">
+                <field name="currency_id" column_invisible="True"/>
+                <field name="name" string="单号" decoration-bf="1"/>
+                <field name="date_order" string="订单日期"/>
+                <field name="partner_id" string="供应商"/>
+                <field name="user_id" string="采购员" widget="many2one_avatar_user" optional="show"/>
+                <field name="amount_total" string="总计" widget="monetary" options="{'currency_field': 'currency_id'}" optional="show"/>
+                <field name="state" string="状态" widget="badge"
+                    decoration-success="state in ('purchase','done')"
+                    decoration-info="state == 'draft'"
+                    decoration-primary="state == 'sent'"/>
+                <field name="write_uid" string="最近操作人" optional="hide"/>
+                <field name="write_date" string="最近操作时间" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_sale_order_form_security" model="ir.ui.view">
+        <field name="name">sale.order.form.security.wms</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_confirm_and_open_delivery"
+                    type="object"
+                    string="确认并进入出库"
+                    class="btn-primary"
+                    invisible="state not in ('draft', 'sent')"/>
+                <button name="action_open_next_delivery"
+                    type="object"
+                    string="下一步：去销售出库"
+                    class="btn-primary"
+                    invisible="state not in ('sale', 'done')"/>
+            </xpath>
+            <xpath expr="//button[@name='action_cancel']" position="attributes">
+                <attribute name="groups">base.group_system,custom_wms_base.group_wms_boss</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_draft']" position="attributes">
+                <attribute name="groups">base.group_system,custom_wms_base.group_wms_boss</attribute>
+            </xpath>
+            <xpath expr="//label[@for='pricelist_id']" position="attributes">
+                <attribute name="string">销售价格表</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/list/field[@name='price_subtotal'][1]" position="before">
+                <field name="wms_cost_unit" string="成本单价" optional="show"/>
+                <field name="wms_cost_subtotal" string="成本金额" optional="show"/>
+                <field name="wms_margin_amount" string="预计毛利" optional="show"/>
+                <field name="wms_margin_rate" string="毛利率(%)" optional="show"/>
+            </xpath>
+            <xpath expr="//group[@name='sale_total']/field[@name='tax_totals']" position="after">
+                <div class="mt-2">
+                    <label for="wms_margin_amount" string="订单预计毛利"/>
+                    <div class="o_row">
+                        <field name="wms_margin_amount" nolabel="1" readonly="1"/>
+                        <span class="mx-2">|</span>
+                        <span class="text-muted">毛利率：</span>
+                        <field name="wms_margin_rate" nolabel="1" readonly="1" class="oe_inline"/>%
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_stock_picking_form_security" model="ir.ui.view">
+        <field name="name">stock.picking.form.security.wms</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <div class="alert alert-info" role="alert" invisible="state != 'draft'">
+                    操作提示：库管通常不需要手工新建出入库单。请优先处理采购单/销售单自动生成的任务单。
+                    联系人：入库填供应商联系人，出库填客户联系人；作业类型：入库选“收货”，出库选“交货”。
+                </div>
+            </xpath>
+            <xpath expr="//field[@name='partner_id']" position="attributes">
+                <attribute name="string">业务联系人（供应商/客户）</attribute>
+            </xpath>
+            <xpath expr="//field[@name='picking_type_id']" position="attributes">
+                <attribute name="string">作业类型（收货/交货）</attribute>
+            </xpath>
+            <xpath expr="//header" position="inside">
+                <button name="action_open_next_sales_step"
+                    type="object"
+                    string="下一步：去销售下单"
+                    class="btn-primary"
+                    invisible="picking_type_code != 'incoming' or state != 'done'"/>
+            </xpath>
+            <xpath expr="//button[@name='action_cancel']" position="attributes">
+                <attribute name="groups">base.group_system,custom_wms_base.group_wms_boss</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_product_template_form_cn_sync_fields" model="ir.ui.view">
+        <field name="name">product.template.form.cn.sync.fields</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='custom_wms_extension']/group[@name='wms_sync_anchor']" position="replace">
+                <group string="China Warehouse Mirror" name="wms_sync_anchor">
+                    <group>
+                        <field name="cn_external_qty"/>
+                    </group>
+                    <group>
+                        <field name="total_sellable_qty" readonly="1"/>
+                    </group>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_product_template_tree_cn_sync_fields" model="ir.ui.view">
+        <field name="name">product.template.tree.cn.sync.fields</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_tree_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='standard_price']" position="after">
+                <field name="cn_external_qty" optional="show"/>
+                <field name="total_sellable_qty" optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

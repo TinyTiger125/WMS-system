@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_purchase_order_tree_recent_trace" model="ir.ui.view">
+        <field name="name">purchase.order.tree.recent.trace</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='state']" position="before">
+                <field name="write_uid" string="最近操作人" optional="hide"/>
+                <field name="write_date" string="最近操作时间" optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_sale_order_tree_recent_trace" model="ir.ui.view">
+        <field name="name">sale.order.tree.recent.trace</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.sale_order_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='state']" position="before">
+                <field name="write_uid" string="最近操作人" optional="hide"/>
+                <field name="write_date" string="最近操作时间" optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_stock_picking_tree_recent_trace" model="ir.ui.view">
+        <field name="name">stock.picking.tree.recent.trace</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.vpicktree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='state']" position="before">
+                <field name="write_uid" string="最近操作人" optional="hide"/>
+                <field name="write_date" string="最近操作时间" optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_account_tax_search_country_quick_filter" model="ir.ui.view">
+        <field name="name">account.tax.search.country.quick.filter</field>
+        <field name="model">account.tax</field>
+        <field name="inherit_id" ref="account.view_account_tax_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//separator[last()]" position="before">
+                <filter string="日本税项" name="wms_tax_japan" domain="[('name', 'ilike', '日本')]"/>
+                <filter string="中国税项" name="wms_tax_china" domain="[('name', 'ilike', '中国')]"/>
+                <filter string="通用税项" name="wms_tax_generic" domain="[('name', 'ilike', '通用')]"/>
+                <separator/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="account_tax_view_search_country_quick_filter" model="ir.ui.view">
+        <field name="name">account.tax.search.filters.country.quick.filter</field>
+        <field name="model">account.tax</field>
+        <field name="inherit_id" ref="account.account_tax_view_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <filter string="日本税项" name="wms_tax_japan_inline" domain="[('name', 'ilike', '日本')]"/>
+                <filter string="中国税项" name="wms_tax_china_inline" domain="[('name', 'ilike', '中国')]"/>
+                <filter string="通用税项" name="wms_tax_generic_inline" domain="[('name', 'ilike', '通用')]"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

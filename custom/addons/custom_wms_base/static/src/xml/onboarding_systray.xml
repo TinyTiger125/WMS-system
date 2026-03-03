@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="custom_wms_base.WmsOnboardingSystray">
+        <div class="o_systray_item" role="button" title="新手上手（15分钟）" t-on-click="openGuide">
+            <i class="fa fa-question-circle"/>
+        </div>
+    </t>
+</templates>

@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_custom_customs_export_wizard_boss,custom.customs.export.wizard boss,model_custom_customs_export_wizard,custom_wms_base.group_wms_boss,1,1,1,1
+access_custom_customs_export_wizard_warehouse,custom.customs.export.wizard warehouse,model_custom_customs_export_wizard,custom_wms_base.group_wms_warehouse_ops,1,1,1,1
+access_custom_customs_export_wizard_sales,custom.customs.export.wizard sales,model_custom_customs_export_wizard,custom_wms_base.group_wms_sales_ops,1,1,1,1

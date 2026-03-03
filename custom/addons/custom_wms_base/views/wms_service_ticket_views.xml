@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_custom_wms_service_ticket_list" model="ir.ui.view">
+        <field name="name">custom.wms.service.ticket.list</field>
+        <field name="model">custom.wms.service.ticket</field>
+        <field name="arch" type="xml">
+            <list string="客服工单" default_order="priority desc, deadline asc">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="source_type"/>
+                <field name="state"/>
+                <field name="priority"/>
+                <field name="responsible_id"/>
+                <field name="deadline"/>
+                <field name="write_uid" string="最近处理人" optional="hide"/>
+                <field name="write_date" string="最近处理时间" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_custom_wms_service_ticket_form" model="ir.ui.view">
+        <field name="name">custom.wms.service.ticket.form</field>
+        <field name="model">custom.wms.service.ticket</field>
+        <field name="arch" type="xml">
+            <form string="客服工单">
+                <header>
+                    <button name="action_start" type="object" string="开始处理" class="btn-primary" invisible="state != 'new'"/>
+                    <button name="action_pending" type="object" string="转待客户" invisible="state not in ('new', 'in_progress')"/>
+                    <button name="action_done" type="object" string="处理完成" class="btn-primary" invisible="state not in ('new', 'in_progress', 'pending')"/>
+                    <button name="action_cancel" type="object" string="取消工单" invisible="state in ('done', 'cancel')"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new,in_progress,pending,done,cancel"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="partner_id"/>
+                            <field name="source_type"/>
+                            <field name="priority"/>
+                        </group>
+                        <group>
+                            <field name="responsible_id"/>
+                            <field name="deadline"/>
+                            <field name="company_id"/>
+                        </group>
+                    </group>
+                    <field name="description"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_custom_wms_service_ticket_search" model="ir.ui.view">
+        <field name="name">custom.wms.service.ticket.search</field>
+        <field name="model">custom.wms.service.ticket</field>
+        <field name="arch" type="xml">
+            <search string="客服工单">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="responsible_id"/>
+                <filter string="我的工单" name="my_tickets" domain="[('responsible_id', '=', uid)]"/>
+                <filter string="待处理" name="open" domain="[('state', 'in', ('new', 'in_progress'))]"/>
+                <filter string="待客户" name="pending" domain="[('state', '=', 'pending')]"/>
+                <filter string="已完成" name="done" domain="[('state', '=', 'done')]"/>
+                <filter string="逾期" name="overdue" domain="[('deadline', '&lt;', context_today()), ('state', 'in', ('new', 'in_progress', 'pending'))]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_custom_wms_service_ticket" model="ir.actions.act_window">
+        <field name="name">工单列表</field>
+        <field name="res_model">custom.wms.service.ticket</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_custom_wms_service_ticket_search"/>
+        <field name="help" type="html">
+            <p>客服可以在这里统一处理售后/咨询工单，并与销售、仓库联动。</p>
+        </field>
+    </record>
+
+    <record id="action_custom_wms_service_ticket_my" model="ir.actions.act_window">
+        <field name="name">我的工单</field>
+        <field name="res_model">custom.wms.service.ticket</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('responsible_id', '=', uid), ('state', 'in', ('new', 'in_progress', 'pending'))]</field>
+        <field name="search_view_id" ref="view_custom_wms_service_ticket_search"/>
+    </record>
+
+    <menuitem id="menu_custom_wms_service_root"
+        name="客服工单"
+        parent="custom_wms_base.menu_custom_wms_root"
+        sequence="55"
+        groups="base.group_system,custom_wms_base.group_wms_boss,custom_wms_base.group_wms_service_ops"/>
+
+    <menuitem id="menu_custom_wms_service_dashboard"
+        name="客服仪表盘"
+        parent="menu_custom_wms_service_root"
+        action="custom_wms_base.action_custom_wms_open_service_dashboard"
+        sequence="10"
+        groups="base.group_system,custom_wms_base.group_wms_boss,custom_wms_base.group_wms_service_ops"/>
+
+    <menuitem id="menu_custom_wms_service_ticket_list_menu"
+        name="工单列表"
+        parent="menu_custom_wms_service_root"
+        action="action_custom_wms_service_ticket"
+        sequence="20"/>
+
+    <menuitem id="menu_custom_wms_service_ticket_my_menu"
+        name="我的工单"
+        parent="menu_custom_wms_service_root"
+        action="action_custom_wms_service_ticket_my"
+        sequence="30"/>
+</odoo>

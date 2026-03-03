@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_product_template_tree_wms_master" model="ir.ui.view">
+        <field name="name">product.template.tree.wms.master</field>
+        <field name="model">product.template</field>
+        <field name="arch" type="xml">
+            <list string="商品档案" default_order="id desc">
+                <field name="active" column_invisible="True"/>
+                <field name="image_128" string="图片" widget="image" optional="show"/>
+                <field name="barcode" string="条码" optional="show"/>
+                <field name="name" string="中文名" optional="show"/>
+                <field name="name_jp" string="日文名" optional="show"/>
+                <field name="origin_country_id" string="产地" optional="show"/>
+                <field name="declared_currency_id" column_invisible="True"/>
+                <field name="declared_value" string="申报价格" widget="monetary" options="{'currency_field': 'declared_currency_id'}" optional="show"/>
+                <field name="currency_id" column_invisible="True"/>
+                <field name="list_price" string="销售价格" widget="monetary" options="{'currency_field': 'currency_id'}" optional="show"/>
+                <field name="net_weight_kg" string="净重(kg)" optional="show"/>
+                <field name="gross_weight_kg" string="毛重(kg)" optional="show"/>
+                <field name="carton_spec" string="箱规" optional="show"/>
+                <field name="wms_min_qty" string="最低库存预警" optional="hide"/>
+                <field name="wms_max_qty" string="最高库存预警" optional="hide"/>
+                <field name="customs_ready" string="报关资料完整" optional="show"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_product_template_search_wms_master" model="ir.ui.view">
+        <field name="name">product.template.search.wms.master</field>
+        <field name="model">product.template</field>
+        <field name="arch" type="xml">
+            <search string="商品档案">
+                <field name="barcode"/>
+                <field name="name"/>
+                <field name="name_jp"/>
+                <field name="brand_name"/>
+                <field name="cainiao_product_id"/>
+                <field name="origin_country_id"/>
+                <filter string="有条码" name="has_barcode" domain="[('barcode', '!=', False)]"/>
+                <filter string="可售可采" name="sell_purchase" domain="[('sale_ok', '=', True), ('purchase_ok', '=', True)]"/>
+                <filter string="库存商品" name="storable" domain="[('is_storable', '=', True)]"/>
+                <filter string="报关资料完整" name="customs_ready" domain="[('customs_ready', '=', True)]"/>
+                <filter string="报关资料缺失" name="customs_not_ready" domain="[('customs_ready', '=', False)]"/>
+                <group name="group_by">
+                    <filter string="产地" name="group_origin" context="{'group_by': 'origin_country_id'}"/>
+                    <filter string="品牌" name="group_brand" context="{'group_by': 'brand_name'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_product_template_form_customs" model="ir.ui.view">
+        <field name="name">product.template.form.customs.fields</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_open_procurement_step"
+                    type="object"
+                    class="oe_stat_button"
+                    icon="fa-shopping-cart"
+                    string="下一步：采购下单"
+                    invisible="not id"/>
+                <button name="action_open_sales_step"
+                    type="object"
+                    class="oe_stat_button"
+                    icon="fa-line-chart"
+                    string="下一步：销售下单"
+                    invisible="not id"/>
+            </xpath>
+            <xpath expr="//page[@name='general_information']" position="after">
+                <page string="商品扩展" name="custom_wms_extension">
+                    <group string="商品录入信息">
+                        <div class="text-info" colspan="2">
+                            提示：规格、产地可后补。若用于报关，请在出库前补齐海关信息（HS Code/申报价/净重/毛重等）。
+                        </div>
+                        <group>
+                            <field name="name_jp"/>
+                            <field name="brand_name"/>
+                            <field name="manufacturer_name"/>
+                            <field name="spec_text"/>
+                            <field name="ingredient_text"/>
+                            <field name="cainiao_product_id"/>
+                            <field name="unit_1"/>
+                            <field name="remark"/>
+                        </group>
+                        <group>
+                            <field name="origin_country_id"/>
+                            <field name="declared_currency_id"/>
+                            <field name="declared_value"/>
+                            <field name="list_price"/>
+                            <field name="net_weight_kg"/>
+                            <field name="gross_weight_kg"/>
+                            <field name="carton_spec"/>
+                            <field name="wms_min_qty"/>
+                            <field name="wms_max_qty"/>
+                            <field name="unit_2"/>
+                        </group>
+                    </group>
+                    <group string="图片与海关信息">
+                        <group>
+                            <field name="image_note"/>
+                            <field name="extra_image_ids" widget="many2many_binary"/>
+                        </group>
+                        <group>
+                            <field name="jp_customs_category_id"/>
+                            <field name="jp_customs_code" readonly="1"/>
+                            <field name="cn_customs_category_id"/>
+                            <field name="cn_customs_code" readonly="1"/>
+                            <field name="customs_hs_code"/>
+                            <field name="customs_name_cn"/>
+                            <field name="customs_name_jp"/>
+                            <field name="customs_ready" readonly="1"/>
+                            <field name="customs_missing_fields" readonly="1" invisible="customs_ready"/>
+                        </group>
+                    </group>
+                    <group name="wms_sync_anchor"/>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_product_template_tree_customs" model="ir.ui.view">
+        <field name="name">product.template.tree.customs.fields</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_tree_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='barcode']" position="after">
+                <field name="name_jp" optional="hide"/>
+                <field name="origin_country_id" optional="show"/>
+                <field name="customs_hs_code" optional="show"/>
+                <field name="declared_currency_id" column_invisible="True"/>
+                <field name="declared_value" widget="monetary" options="{'currency_field': 'declared_currency_id'}" optional="show"/>
+                <field name="net_weight_kg" optional="show"/>
+                <field name="gross_weight_kg" optional="show"/>
+                <field name="carton_spec" optional="show"/>
+                <field name="cainiao_product_id" optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

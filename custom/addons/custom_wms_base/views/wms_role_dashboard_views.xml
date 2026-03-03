@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_custom_wms_role_dashboard_form" model="ir.ui.view">
+        <field name="name">custom.wms.role.dashboard.form</field>
+        <field name="model">custom.wms.role.dashboard</field>
+        <field name="arch" type="xml">
+            <form string="角色仪表盘" create="0" edit="0" delete="0">
+                <header>
+                    <button name="refresh_metrics" type="object" string="刷新指标" class="btn-primary"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="1"/></h1>
+                        <div class="text-muted">更新时间：<field name="as_of" readonly="1"/></div>
+                    </div>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_open_pending_purchase" type="object" class="oe_stat_button" icon="fa-shopping-cart" invisible="role != 'boss'">
+                            <field name="boss_pending_purchase_count" widget="statinfo" string="待采购确认"/>
+                        </button>
+                        <button name="action_open_pending_delivery" type="object" class="oe_stat_button" icon="fa-truck" invisible="role != 'boss'">
+                            <field name="boss_pending_delivery_count" widget="statinfo" string="待销售出库"/>
+                        </button>
+                        <button name="action_open_low_stock" type="object" class="oe_stat_button" icon="fa-exclamation-triangle" invisible="role != 'boss'">
+                            <field name="boss_low_stock_count" widget="statinfo" string="低库存"/>
+                        </button>
+                        <button name="action_open_missing_cost" type="object" class="oe_stat_button" icon="fa-warning" invisible="role != 'boss'">
+                            <field name="boss_missing_cost_count" widget="statinfo" string="无成本价"/>
+                        </button>
+                        <button name="action_open_incoming_transit" type="object" class="oe_stat_button" icon="fa-sign-in" invisible="role != 'warehouse'">
+                            <field name="wh_incoming_in_transit" widget="statinfo" string="在途入库"/>
+                        </button>
+                        <button name="action_open_outgoing_transit" type="object" class="oe_stat_button" icon="fa-sign-out" invisible="role != 'warehouse'">
+                            <field name="wh_outgoing_in_transit" widget="statinfo" string="在途出库"/>
+                        </button>
+                        <button name="action_open_low_stock" type="object" class="oe_stat_button" icon="fa-exclamation-circle" invisible="role != 'warehouse'">
+                            <field name="wh_exception_count" widget="statinfo" string="库存异常"/>
+                        </button>
+                        <button name="action_open_service_tickets" type="object" class="oe_stat_button" icon="fa-life-ring" invisible="role != 'service'">
+                            <field name="service_open_count" widget="statinfo" string="待处理工单"/>
+                        </button>
+                    </div>
+                    <group string="老板指标" invisible="role != 'boss'">
+                        <group>
+                            <field name="company_currency_id" invisible="1"/>
+                            <field name="boss_stock_value" widget="monetary" options="{'currency_field': 'company_currency_id'}"/>
+                            <field name="boss_low_stock_count"/>
+                            <field name="boss_missing_cost_count"/>
+                        </group>
+                        <group>
+                            <field name="boss_pending_purchase_count"/>
+                            <field name="boss_pending_delivery_count"/>
+                        </group>
+                    </group>
+                    <group string="库管指标" invisible="role != 'warehouse'">
+                        <group>
+                            <field name="wh_stock_qty_total"/>
+                            <field name="wh_incoming_in_transit"/>
+                            <field name="wh_outgoing_in_transit"/>
+                        </group>
+                        <group>
+                            <field name="wh_partial_contract_count"/>
+                            <field name="wh_exception_count"/>
+                        </group>
+                    </group>
+                    <group string="客服指标" invisible="role != 'service'">
+                        <group>
+                            <field name="service_open_count"/>
+                            <field name="service_pending_count"/>
+                        </group>
+                        <group>
+                            <field name="service_overdue_count"/>
+                            <field name="service_today_new_count"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_custom_wms_open_boss_dashboard" model="ir.actions.server">
+        <field name="name">打开老板仪表盘</field>
+        <field name="model_id" ref="model_custom_wms_role_dashboard"/>
+        <field name="state">code</field>
+        <field name="code">action = model.action_open_boss_dashboard()</field>
+    </record>
+
+    <record id="action_custom_wms_open_warehouse_dashboard" model="ir.actions.server">
+        <field name="name">打开库管仪表盘</field>
+        <field name="model_id" ref="model_custom_wms_role_dashboard"/>
+        <field name="state">code</field>
+        <field name="code">action = model.action_open_warehouse_dashboard()</field>
+    </record>
+
+    <record id="action_custom_wms_open_service_dashboard" model="ir.actions.server">
+        <field name="name">打开客服仪表盘</field>
+        <field name="model_id" ref="model_custom_wms_role_dashboard"/>
+        <field name="state">code</field>
+        <field name="code">action = model.action_open_service_dashboard()</field>
+    </record>
+</odoo>

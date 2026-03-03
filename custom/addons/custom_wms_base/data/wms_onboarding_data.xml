@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="wms_onboarding_all_10" model="custom.wms.onboarding">
+        <field name="name">确认你的角色入口</field>
+        <field name="role_scope">all</field>
+        <field name="step_no">10</field>
+        <field name="operation_path">跨境进销存 → 进销存流程 → 今日待办</field>
+        <field name="operation_hint">先从“我的工作台”进入，不要直接在报表或配置页开始操作。</field>
+        <field name="expected_result">可以看到与你职责相关的待处理单据。</field>
+    </record>
+    <record id="wms_onboarding_all_20" model="custom.wms.onboarding">
+        <field name="name">先建商品再走单据</field>
+        <field name="role_scope">all</field>
+        <field name="step_no">20</field>
+        <field name="operation_path">进销存流程 → 商品与主数据 → 商品登记（新增）</field>
+        <field name="operation_hint">录入条码、中文名、规格、产地、申报价、重量等关键字段。</field>
+        <field name="expected_result">商品在“商品档案”中可检索。</field>
+    </record>
+    <record id="wms_onboarding_all_30" model="custom.wms.onboarding">
+        <field name="name">按业务链路执行</field>
+        <field name="role_scope">all</field>
+        <field name="step_no">30</field>
+        <field name="operation_path">采购下单 → 采购入库 → 销售订单 → 销售出库</field>
+        <field name="operation_hint">严格按链路顺序走，避免跳步骤导致数据不一致。</field>
+        <field name="expected_result">库存总览与单据状态一致。</field>
+    </record>
+
+    <record id="wms_onboarding_wh_10" model="custom.wms.onboarding">
+        <field name="name">仓库待办优先处理</field>
+        <field name="role_scope">warehouse</field>
+        <field name="step_no">10</field>
+        <field name="operation_path">今日待办 → 仓库工作台</field>
+        <field name="operation_hint">先清理“待处理入库/出库”，再做历史单据追溯。</field>
+        <field name="expected_result">仓库工作台中的待办显著下降。</field>
+    </record>
+    <record id="wms_onboarding_wh_20" model="custom.wms.onboarding">
+        <field name="name">处理库存预警</field>
+        <field name="role_scope">warehouse</field>
+        <field name="step_no">20</field>
+        <field name="operation_path">库存监控 → 库存预警</field>
+        <field name="operation_hint">先处理低库存商品，再处理高库存积压商品。</field>
+        <field name="expected_result">低库存数量下降，异常商品有处理记录。</field>
+    </record>
+
+    <record id="wms_onboarding_sales_10" model="custom.wms.onboarding">
+        <field name="name">销售先确认可售库存</field>
+        <field name="role_scope">sales</field>
+        <field name="step_no">10</field>
+        <field name="operation_path">今日待办 → 销售工作台</field>
+        <field name="operation_hint">优先处理待确认订单，避免积压。</field>
+        <field name="expected_result">销售工作台的草稿/待确认单减少。</field>
+    </record>
+    <record id="wms_onboarding_sales_20" model="custom.wms.onboarding">
+        <field name="name">出库前复核关键字段</field>
+        <field name="role_scope">sales</field>
+        <field name="step_no">20</field>
+        <field name="operation_path">销售执行 → 销售出库</field>
+        <field name="operation_hint">检查客户、数量、商品条码，减少错发漏发。</field>
+        <field name="expected_result">出库单一次通过，减少回退单据。</field>
+    </record>
+
+    <record id="wms_onboarding_boss_10" model="custom.wms.onboarding">
+        <field name="name">先看经营日报再看明细</field>
+        <field name="role_scope">boss</field>
+        <field name="step_no">10</field>
+        <field name="operation_path">今日待办 → 老板工作台（经营日报）</field>
+        <field name="operation_hint">先看当日入库/出库/预警总览，再下钻问题单据。</field>
+        <field name="expected_result">当天经营异常点可快速定位。</field>
+    </record>
+    <record id="wms_onboarding_boss_20" model="custom.wms.onboarding">
+        <field name="name">关注审计与价格变更</field>
+        <field name="role_scope">boss</field>
+        <field name="step_no">20</field>
+        <field name="operation_path">经营报表 → 价格变更记录 / 操作审计日志</field>
+        <field name="operation_hint">复核关键字段修改和高风险操作。</field>
+        <field name="expected_result">关键改动有迹可循，可追责可复盘。</field>
+    </record>
+</odoo>

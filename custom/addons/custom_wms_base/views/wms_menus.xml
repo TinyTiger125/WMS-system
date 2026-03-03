@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_custom_wms_root"
+        name="跨境进销存"
+        sequence="1"
+        groups="base.group_system,custom_wms_base.group_wms_boss,custom_wms_base.group_wms_warehouse_ops,custom_wms_base.group_wms_sales_ops,custom_wms_base.group_wms_service_ops"/>
+
+    <record id="action_custom_wms_product_master" model="ir.actions.act_window">
+        <field name="name">商品档案</field>
+        <field name="res_model">product.template</field>
+        <field name="view_mode">list,form,kanban</field>
+        <field name="view_id" ref="custom_wms_base.view_product_template_tree_wms_master"/>
+        <field name="search_view_id" ref="custom_wms_base.view_product_template_search_wms_master"/>
+        <field name="context">{'default_type': 'consu', 'default_is_storable': True, 'search_default_has_barcode': 1}</field>
+        <field name="help" type="html">
+            <p>先完成商品主数据，再开始采购和销售流程。</p>
+        </field>
+    </record>
+
+    <record id="action_custom_wms_product_create" model="ir.actions.act_window">
+        <field name="name">商品登记（新增）</field>
+        <field name="res_model">product.template</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="product.product_template_only_form_view"/>
+        <field name="context">{'default_type': 'consu', 'default_is_storable': True, 'default_sale_ok': True, 'default_purchase_ok': True}</field>
+        <field name="help" type="html">
+            <p>新手建议先登记 1 个测试商品，验证后再批量导入。</p>
+        </field>
+    </record>
+
+    <record id="action_custom_wms_purchase_flow" model="ir.actions.act_window">
+        <field name="name">采购下单</field>
+        <field name="res_model">purchase.order</field>
+        <field name="view_id" ref="custom_wms_base.view_purchase_order_tree_wms_safe"/>
+        <field name="view_mode">list,form,kanban,pivot,graph,activity</field>
+        <field name="domain">[('state', 'in', ('draft', 'sent', 'to approve', 'purchase', 'done'))]</field>
+        <field name="help" type="html">
+            <p>暂无采购单。建议先从“商品与主数据”完成商品登记，再创建采购单。</p>
+        </field>
+    </record>
+
+    <record id="action_custom_wms_receipts_flow" model="ir.actions.act_window">
+        <field name="name">采购入库</field>
+        <field name="res_model">stock.picking</field>
+        <field name="view_mode">list,kanban,form,calendar,activity</field>
+        <field name="domain">[('picking_type_code', '=', 'incoming')]</field>
+        <field name="context">{'create': False}</field>
+        <field name="help" type="html">
+            <p>暂无入库单。采购单确认后会自动生成入库单。</p>
+        </field>
+    </record>
+
+    <record id="action_custom_wms_sales_flow" model="ir.actions.act_window">
+        <field name="name">销售订单</field>
+        <field name="res_model">sale.order</field>
+        <field name="view_id" ref="custom_wms_base.view_sale_order_tree_wms_safe"/>
+        <field name="view_mode">list,kanban,form,pivot,graph,activity</field>
+        <field name="domain">[('state', 'in', ('draft', 'sent', 'sale', 'done'))]</field>
+        <field name="help" type="html">
+            <p>暂无销售单。可先从“商品档案”确认可售商品，再开始销售下单。</p>
+        </field>
+    </record>
+
+    <record id="action_custom_wms_pricelist" model="ir.actions.act_window">
+        <field name="name">销售价格表</field>
+        <field name="res_model">product.pricelist</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p>用于日常维护销售价格规则，销售单“价格表”字段将直接引用这里的数据。</p>
+        </field>
+    </record>
+
+    <record id="action_custom_wms_deliveries_flow" model="ir.actions.act_window">
+        <field name="name">销售出库</field>
+        <field name="res_model">stock.picking</field>
+        <field name="view_mode">list,kanban,form,calendar,activity</field>
+        <field name="domain">[('picking_type_code', '=', 'outgoing')]</field>
+        <field name="context">{'create': False}</field>
+        <field name="help" type="html">
+            <p>暂无出库单。销售订单确认后会自动生成出库单。</p>
+        </field>
+    </record>
+
+    <record id="action_custom_wms_todo_purchase_confirm" model="ir.actions.act_window">
+        <field name="name">待采购确认</field>
+        <field name="res_model">purchase.order</field>
+        <field name="view_id" ref="custom_wms_base.view_purchase_order_tree_wms_safe"/>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('state', 'in', ('draft', 'sent', 'to approve'))]</field>
+        <field name="help" type="html">
+            <p>这里是老板待处理的采购确认任务。</p>
+        </field>
+    </record>
+
+    <record id="action_custom_wms_todo_receipt" model="ir.actions.act_window">
+        <field name="name">待采购入库</field>
+        <field name="res_model">stock.picking</field>
+        <field name="view_mode">list,form,kanban</field>
+        <field name="domain">[('picking_type_code', '=', 'incoming'), ('state', 'not in', ('done', 'cancel'))]</field>
+        <field name="context">{'create': False}</field>
+        <field name="help" type="html">
+            <p>这里是库管待处理的采购入库任务。</p>
+        </field>
+    </record>
+
+    <record id="action_custom_wms_todo_delivery" model="ir.actions.act_window">
+        <field name="name">待销售出库</field>
+        <field name="res_model">stock.picking</field>
+        <field name="view_mode">list,form,kanban</field>
+        <field name="domain">[('picking_type_code', '=', 'outgoing'), ('state', 'not in', ('done', 'cancel'))]</field>
+        <field name="context">{'create': False}</field>
+        <field name="help" type="html">
+            <p>这里是库管待处理的销售出库任务。</p>
+        </field>
+    </record>
+
+    <record id="action_custom_wms_todo_low_stock" model="ir.actions.act_window">
+        <field name="name">低库存预警</field>
+        <field name="res_model">custom.wms.stock.exception</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('status', '=', 'low')]</field>
+        <field name="help" type="html">
+            <p>这里是需要优先补货的低库存商品。</p>
+        </field>
+    </record>
+
+    <menuitem id="menu_custom_wms_flow_root"
+        name="进销存流程"
+        parent="menu_custom_wms_root"
+        sequence="1"
+        groups="base.group_system,custom_wms_base.group_wms_boss,custom_wms_base.group_wms_warehouse_ops,custom_wms_base.group_wms_sales_ops"/>
+
+    <menuitem id="menu_custom_wms_workspace_root"
+        name="今日待办"
+        parent="menu_custom_wms_root"
+        sequence="5"
+        groups="base.group_system,custom_wms_base.group_wms_boss,custom_wms_base.group_wms_warehouse_ops,custom_wms_base.group_wms_sales_ops,custom_wms_base.group_wms_service_ops"/>
+
+    <menuitem id="menu_custom_wms_master_ops_root"
+        name="商品与主数据"
+        parent="menu_custom_wms_root"
+        sequence="10"
+        groups="base.group_system,custom_wms_base.group_wms_boss,custom_wms_base.group_wms_sales_ops"/>
+
+    <menuitem id="menu_custom_wms_procurement_root"
+        name="采购执行"
+        parent="menu_custom_wms_root"
+        sequence="20"
+        groups="base.group_system,custom_wms_base.group_wms_boss,custom_wms_base.group_wms_warehouse_ops"/>
+
+    <menuitem id="menu_custom_wms_sales_ops_root"
+        name="销售执行"
+        parent="menu_custom_wms_root"
+        sequence="30"
+        groups="base.group_system,custom_wms_base.group_wms_boss,custom_wms_base.group_wms_warehouse_ops,custom_wms_base.group_wms_sales_ops"/>
+
+    <menuitem id="menu_custom_wms_inventory_ops_root"
+        name="库存监控"
+        parent="menu_custom_wms_root"
+        sequence="40"
+        groups="base.group_system,custom_wms_base.group_wms_boss,custom_wms_base.group_wms_warehouse_ops"/>
+
+    <menuitem id="menu_custom_wms_product_create"
+        name="1. 商品登记（新增）"
+        parent="menu_custom_wms_master_ops_root"
+        action="action_custom_wms_product_create"
+        sequence="10"/>
+
+    <menuitem id="menu_custom_wms_products_flow"
+        name="2. 商品档案"
+        parent="menu_custom_wms_master_ops_root"
+        action="action_custom_wms_product_master"
+        sequence="20"/>
+
+    <menuitem id="menu_custom_wms_products_import"
+        name="2.1 商品批量导入"
+        parent="menu_custom_wms_master_ops_root"
+        action="custom_wms_base.action_custom_product_import_wizard"
+        sequence="25"/>
+
+    <menuitem id="menu_custom_wms_sales_pricelist"
+        name="2.2 销售价格表"
+        parent="menu_custom_wms_master_ops_root"
+        action="action_custom_wms_pricelist"
+        sequence="26"
+        groups="base.group_system,custom_wms_base.group_wms_boss,custom_wms_base.group_wms_sales_ops"/>
+
+    <menuitem id="menu_custom_wms_purchase"
+        name="3. 采购下单"
+        parent="menu_custom_wms_procurement_root"
+        action="action_custom_wms_purchase_flow"
+        sequence="30"
+        groups="base.group_system,custom_wms_base.group_wms_boss"/>
+
+    <menuitem id="menu_custom_wms_receipts"
+        name="4. 采购入库"
+        parent="menu_custom_wms_procurement_root"
+        action="action_custom_wms_receipts_flow"
+        sequence="40"/>
+
+    <menuitem id="menu_custom_wms_sales"
+        name="5. 销售订单"
+        parent="menu_custom_wms_sales_ops_root"
+        action="action_custom_wms_sales_flow"
+        sequence="50"
+        groups="base.group_system,custom_wms_base.group_wms_boss,custom_wms_base.group_wms_sales_ops"/>
+
+    <menuitem id="menu_custom_wms_deliveries"
+        name="6. 销售出库"
+        parent="menu_custom_wms_sales_ops_root"
+        action="action_custom_wms_deliveries_flow"
+        sequence="60"/>
+
+    <menuitem id="menu_custom_wms_todo_purchase_confirm"
+        name="待采购确认"
+        parent="menu_custom_wms_workspace_root"
+        action="action_custom_wms_todo_purchase_confirm"
+        sequence="11"
+        groups="base.group_system,custom_wms_base.group_wms_boss"/>
+
+    <menuitem id="menu_custom_wms_todo_receipt"
+        name="待采购入库"
+        parent="menu_custom_wms_workspace_root"
+        action="action_custom_wms_todo_receipt"
+        sequence="12"/>
+
+    <menuitem id="menu_custom_wms_todo_delivery"
+        name="待销售出库"
+        parent="menu_custom_wms_workspace_root"
+        action="action_custom_wms_todo_delivery"
+        sequence="13"/>
+
+    <menuitem id="menu_custom_wms_todo_low_stock"
+        name="低库存预警"
+        parent="menu_custom_wms_workspace_root"
+        action="action_custom_wms_todo_low_stock"
+        sequence="16"/>
+
+    <menuitem id="menu_custom_wms_stock_report"
+        name="7. 库存总览"
+        parent="menu_custom_wms_inventory_ops_root"
+        action="stock.action_product_stock_view"
+        sequence="70"/>
+
+    <menuitem id="menu_custom_wms_master_data"
+        name="基础资料"
+        parent="menu_custom_wms_root"
+        sequence="60"
+        groups="base.group_system,custom_wms_base.group_wms_boss"/>
+
+    <menuitem id="menu_custom_wms_products_archive"
+        name="商品档案"
+        parent="menu_custom_wms_master_data"
+        action="action_custom_wms_product_master"
+        sequence="10"/>
+
+    <record id="action_custom_wms_user_admin" model="ir.actions.act_window">
+        <field name="name">账号管理</field>
+        <field name="res_model">res.users</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('share', '=', False)]</field>
+        <field name="context">{'search_default_filter_active': 1}</field>
+        <field name="help" type="html">
+            <p>用于开通/停用员工账号，并分配老板、库管、销售、客服角色权限。</p>
+        </field>
+    </record>
+
+    <menuitem id="menu_custom_wms_user_admin"
+        name="账号管理"
+        parent="menu_custom_wms_master_data"
+        action="action_custom_wms_user_admin"
+        sequence="20"
+        groups="base.group_system"/>
+
+    <menuitem id="menu_custom_wms_flow_step_config"
+        name="业务推进流配置"
+        parent="menu_custom_wms_master_data"
+        action="action_custom_wms_flow_step"
+        sequence="40"/>
+
+    <record id="menu_custom_wms_onboarding" model="ir.ui.menu">
+        <field name="active">False</field>
+    </record>
+    <record id="purchase.menu_purchase_rfq" model="ir.ui.menu">
+        <field name="active">False</field>
+    </record>
+    <record id="mail.menu_root_discuss" model="ir.ui.menu">
+        <field name="active">False</field>
+    </record>
+    <record id="sale.sale_menu_root" model="ir.ui.menu">
+        <field name="active">False</field>
+    </record>
+    <record id="spreadsheet_dashboard.spreadsheet_dashboard_menu_root" model="ir.ui.menu">
+        <field name="active">True</field>
+        <field name="group_ids" eval="[(6, 0, [ref('base.group_system'), ref('custom_wms_base.group_wms_boss')])]"/>
+    </record>
+    <record id="account.menu_finance" model="ir.ui.menu">
+        <field name="active">False</field>
+    </record>
+    <record id="purchase.menu_purchase_root" model="ir.ui.menu">
+        <field name="active">False</field>
+    </record>
+    <record id="stock.menu_stock_root" model="ir.ui.menu">
+        <field name="active">False</field>
+    </record>
+    <record id="utm.menu_link_tracker_root" model="ir.ui.menu">
+        <field name="active">False</field>
+    </record>
+    <record id="base.menu_management" model="ir.ui.menu">
+        <field name="active">False</field>
+    </record>
+    <record id="base.menu_administration" model="ir.ui.menu">
+        <field name="active">False</field>
+    </record>
+    <record id="base.menu_tests" model="ir.ui.menu">
+        <field name="active">False</field>
+    </record>
+    <record id="menu_custom_wms_flow_root" model="ir.ui.menu">
+        <field name="active">False</field>
+    </record>
+    <record id="menu_custom_wms_master_data" model="ir.ui.menu">
+        <field name="group_ids" eval="[(6, 0, [ref('base.group_system'), ref('custom_wms_base.group_wms_boss')])]"/>
+    </record>
+</odoo>

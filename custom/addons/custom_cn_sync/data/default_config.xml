@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="custom_cn_sync_default_config" model="custom.cn.sync.config">
+        <field name="name">Default CN Sync</field>
+        <field name="active">True</field>
+        <field name="enabled">True</field>
+        <field name="mode">mock</field>
+        <field name="timeout_seconds">10</field>
+        <field name="max_retries">3</field>
+    </record>
+</odoo>

@@ -1,0 +1,69 @@
+services:
+  db:
+    image: postgres:16
+    container_name: wms_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-odoo19_prod}
+      POSTGRES_USER: ${POSTGRES_USER:-odoo}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-odoo}
+    volumes:
+      - wms_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-odoo} -d ${POSTGRES_DB:-odoo19_prod}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  odoo:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    image: custom-wms:1.0
+    container_name: wms_app
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "${ODOO_HTTP_PORT:-8069}:8069"
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: ${POSTGRES_USER:-odoo}
+      DB_PASSWORD: ${POSTGRES_PASSWORD:-odoo}
+      ODOO_DB_NAME: ${POSTGRES_DB:-odoo19_prod}
+      ODOO_ADMIN_PASSWD: ${ODOO_ADMIN_PASSWD:-change_me}
+      ODOO_HTTP_PORT: 8069
+      ODOO_PROXY_MODE: ${ODOO_PROXY_MODE:-False}
+    volumes:
+      - wms_odoo_data:/var/lib/odoo
+      - wms_odoo_log:/var/log/odoo
+    healthcheck:
+      test: ["CMD", "/opt/deploy/healthcheck.sh"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+
+  init:
+    image: custom-wms:1.0
+    container_name: wms_init
+    profiles: ["init"]
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: ${POSTGRES_USER:-odoo}
+      DB_PASSWORD: ${POSTGRES_PASSWORD:-odoo}
+      ODOO_DB_NAME: ${POSTGRES_DB:-odoo19_prod}
+      ODOO_ADMIN_PASSWD: ${ODOO_ADMIN_PASSWD:-change_me}
+      ODOO_INIT_MODULES: ${ODOO_INIT_MODULES:-base,sale_management,purchase,stock,custom_wms_base,custom_customs_export}
+      ODOO_UPGRADE_MODULES: ${ODOO_UPGRADE_MODULES:-custom_wms_base,custom_customs_export}
+    entrypoint: ["/opt/deploy/init-db.sh"]
+
+volumes:
+  wms_pg_data:
+  wms_odoo_data:
+  wms_odoo_log:

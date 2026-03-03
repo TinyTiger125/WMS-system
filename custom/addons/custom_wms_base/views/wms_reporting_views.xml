@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_custom_wms_stock_exception_list" model="ir.ui.view">
+        <field name="name">custom.wms.stock.exception.list</field>
+        <field name="model">custom.wms.stock.exception</field>
+        <field name="arch" type="xml">
+            <list string="库存预警" default_order="status desc, shortage_rate desc">
+                <header>
+                    <button name="action_refresh_exceptions" type="object" string="刷新预警" class="btn-primary"/>
+                </header>
+                <field name="snapshot_time"/>
+                <field name="status"/>
+                <field name="product_tmpl_id"/>
+                <field name="qty_available"/>
+                <field name="standard_price" optional="show"/>
+                <field name="min_qty"/>
+                <field name="max_qty"/>
+                <field name="shortage_rate"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_custom_wms_stock_exception_search" model="ir.ui.view">
+        <field name="name">custom.wms.stock.exception.search</field>
+        <field name="model">custom.wms.stock.exception</field>
+        <field name="arch" type="xml">
+            <search string="库存预警">
+                <field name="product_tmpl_id"/>
+                <filter string="低库存" name="low" domain="[('status', '=', 'low')]"/>
+                <filter string="高库存" name="high" domain="[('status', '=', 'high')]"/>
+                <filter string="无成本价" name="missing_cost" domain="[('status', '=', 'cost_missing')]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_custom_wms_stock_value_rank_list" model="ir.ui.view">
+        <field name="name">custom.wms.stock.value.rank.list</field>
+        <field name="model">custom.wms.stock.value.rank</field>
+        <field name="arch" type="xml">
+            <list string="库存占资TOP10" default_order="snapshot_date desc, rank asc">
+                <field name="snapshot_date"/>
+                <field name="rank"/>
+                <field name="product_tmpl_id"/>
+                <field name="qty_available"/>
+                <field name="unit_cost"/>
+                <field name="valuation_basis"/>
+                <field name="company_currency_id" column_invisible="True"/>
+                <field name="stock_value" widget="monetary" options="{'currency_field': 'company_currency_id'}"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_custom_wms_stock_value_rank_search" model="ir.ui.view">
+        <field name="name">custom.wms.stock.value.rank.search</field>
+        <field name="model">custom.wms.stock.value.rank</field>
+        <field name="arch" type="xml">
+            <search string="库存占资TOP10">
+                <field name="snapshot_date"/>
+                <field name="product_tmpl_id"/>
+                <filter string="成本价估值" name="basis_standard" domain="[('valuation_basis', '=', 'standard')]"/>
+                <filter string="申报价估值" name="basis_declared" domain="[('valuation_basis', '=', 'declared')]"/>
+                <filter string="销售价估值" name="basis_list" domain="[('valuation_basis', '=', 'list')]"/>
+                <filter string="回退估值" name="basis_fallback" domain="[('valuation_basis', '=', 'fallback')]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_custom_wms_stock_value_rank" model="ir.actions.act_window">
+        <field name="name">库存占资TOP10</field>
+        <field name="res_model">custom.wms.stock.value.rank</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_custom_wms_stock_value_rank_search"/>
+    </record>
+
+    <record id="action_custom_wms_stock_exception" model="ir.actions.act_window">
+        <field name="name">库存预警</field>
+        <field name="res_model">custom.wms.stock.exception</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_custom_wms_stock_exception_search"/>
+    </record>
+
+    <record id="action_custom_wms_stock_exception_missing_cost" model="ir.actions.act_window">
+        <field name="name">无成本价预警</field>
+        <field name="res_model">custom.wms.stock.exception</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('status', '=', 'cost_missing')]</field>
+        <field name="search_view_id" ref="view_custom_wms_stock_exception_search"/>
+    </record>
+
+    <record id="view_custom_wms_daily_kpi_list" model="ir.ui.view">
+        <field name="name">custom.wms.daily.kpi.list</field>
+        <field name="model">custom.wms.daily.kpi</field>
+        <field name="arch" type="xml">
+            <list string="经营日报" default_order="report_date desc">
+                <header>
+                    <button name="action_generate_today" type="object" string="生成/刷新日报" class="btn-primary"/>
+                </header>
+                <field name="report_date"/>
+                <field name="purchase_order_count"/>
+                <field name="sale_order_count"/>
+                <field name="inbound_qty"/>
+                <field name="outbound_qty"/>
+                <field name="sale_revenue" widget="monetary" options="{'currency_field': 'company_currency_id'}"/>
+                <field name="estimated_gross_profit" widget="monetary" options="{'currency_field': 'company_currency_id'}"/>
+                <field name="estimated_margin_rate"/>
+                <field name="end_stock_qty"/>
+                <field name="company_currency_id" column_invisible="True"/>
+                <field name="end_stock_value" widget="monetary" options="{'currency_field': 'company_currency_id'}"/>
+                <field name="missing_cost_product_count"/>
+                <field name="low_stock_count"/>
+                <field name="high_stock_count"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_custom_wms_daily_kpi_pivot" model="ir.ui.view">
+        <field name="name">custom.wms.daily.kpi.pivot</field>
+        <field name="model">custom.wms.daily.kpi</field>
+        <field name="arch" type="xml">
+            <pivot string="经营日报">
+                <field name="report_date" type="row"/>
+                <field name="purchase_order_count" type="measure"/>
+                <field name="sale_order_count" type="measure"/>
+                <field name="inbound_qty" type="measure"/>
+                <field name="outbound_qty" type="measure"/>
+                <field name="sale_revenue" type="measure"/>
+                <field name="estimated_gross_profit" type="measure"/>
+                <field name="estimated_margin_rate" type="measure"/>
+                <field name="end_stock_qty" type="measure"/>
+                <field name="end_stock_value" type="measure"/>
+                <field name="missing_cost_product_count" type="measure"/>
+                <field name="low_stock_count" type="measure"/>
+                <field name="high_stock_count" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_custom_wms_daily_kpi_graph" model="ir.ui.view">
+        <field name="name">custom.wms.daily.kpi.graph</field>
+        <field name="model">custom.wms.daily.kpi</field>
+        <field name="arch" type="xml">
+            <graph string="经营日报" type="line">
+                <field name="report_date"/>
+                <field name="inbound_qty" type="measure"/>
+                <field name="outbound_qty" type="measure"/>
+                <field name="sale_revenue" type="measure"/>
+                <field name="estimated_gross_profit" type="measure"/>
+                <field name="end_stock_value" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="action_custom_wms_daily_kpi" model="ir.actions.act_window">
+        <field name="name">经营日报</field>
+        <field name="res_model">custom.wms.daily.kpi</field>
+        <field name="view_mode">list,pivot,graph</field>
+    </record>
+
+    <record id="view_custom_wms_price_history_list" model="ir.ui.view">
+        <field name="name">custom.wms.price.history.list</field>
+        <field name="model">custom.wms.price.history</field>
+        <field name="arch" type="xml">
+            <list string="价格变更记录" default_order="changed_at desc">
+                <field name="changed_at"/>
+                <field name="product_tmpl_id"/>
+                <field name="change_type"/>
+                <field name="old_value"/>
+                <field name="new_value"/>
+                <field name="currency_id"/>
+                <field name="user_id"/>
+                <field name="source_ref"/>
+                <field name="note"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_custom_wms_price_history_search" model="ir.ui.view">
+        <field name="name">custom.wms.price.history.search</field>
+        <field name="model">custom.wms.price.history</field>
+        <field name="arch" type="xml">
+            <search string="价格变更记录">
+                <field name="product_tmpl_id"/>
+                <field name="change_type"/>
+                <filter string="销售价" name="sale" domain="[('change_type', '=', 'sale')]"/>
+                <filter string="成本价" name="cost" domain="[('change_type', '=', 'cost')]"/>
+                <filter string="申报价" name="declared" domain="[('change_type', '=', 'declared')]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_custom_wms_price_history" model="ir.actions.act_window">
+        <field name="name">价格变更记录</field>
+        <field name="res_model">custom.wms.price.history</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_custom_wms_price_history_search"/>
+    </record>
+
+    <record id="view_custom_wms_audit_log_list" model="ir.ui.view">
+        <field name="name">custom.wms.audit.log.list</field>
+        <field name="model">custom.wms.audit.log</field>
+        <field name="arch" type="xml">
+            <list string="操作审计日志" default_order="event_time desc">
+                <field name="event_time"/>
+                <field name="event_type"/>
+                <field name="record_display_name"/>
+                <field name="summary"/>
+                <field name="user_id"/>
+                <field name="company_id"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_custom_wms_audit_log_form" model="ir.ui.view">
+        <field name="name">custom.wms.audit.log.form</field>
+        <field name="model">custom.wms.audit.log</field>
+        <field name="arch" type="xml">
+            <form string="操作审计日志">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="event_time"/>
+                            <field name="event_type"/>
+                            <field name="record_display_name"/>
+                            <field name="summary"/>
+                        </group>
+                        <group>
+                            <field name="model_name"/>
+                            <field name="res_id"/>
+                            <field name="user_id"/>
+                            <field name="company_id"/>
+                        </group>
+                    </group>
+                    <field name="detail_json" widget="text"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_custom_wms_audit_log" model="ir.actions.act_window">
+        <field name="name">操作审计日志</field>
+        <field name="res_model">custom.wms.audit.log</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_custom_wms_stock_exception_flow"
+        name="8. 库存预警"
+        parent="custom_wms_base.menu_custom_wms_inventory_ops_root"
+        action="action_custom_wms_stock_exception"
+        sequence="80"/>
+
+    <menuitem id="menu_custom_wms_reporting_root"
+        name="经营报表"
+        parent="custom_wms_base.menu_custom_wms_root"
+        sequence="70"
+        groups="base.group_system,custom_wms_base.group_wms_boss,custom_wms_base.group_wms_sales_ops"/>
+
+    <menuitem id="menu_custom_wms_exception_center_root"
+        name="异常中心"
+        parent="custom_wms_base.menu_custom_wms_root"
+        sequence="45"
+        groups="base.group_system,custom_wms_base.group_wms_boss,custom_wms_base.group_wms_warehouse_ops"/>
+
+    <menuitem id="menu_custom_wms_exception_pending_ops"
+        name="待处理出入库"
+        parent="menu_custom_wms_exception_center_root"
+        action="custom_wms_base.action_custom_wms_dashboard_warehouse"
+        sequence="10"/>
+
+    <menuitem id="menu_custom_wms_exception_low_stock"
+        name="低库存预警"
+        parent="menu_custom_wms_exception_center_root"
+        action="action_custom_wms_stock_exception"
+        sequence="20"/>
+
+    <menuitem id="menu_custom_wms_exception_missing_cost"
+        name="无成本价预警"
+        parent="menu_custom_wms_exception_center_root"
+        action="action_custom_wms_stock_exception_missing_cost"
+        sequence="30"/>
+
+    <menuitem id="menu_custom_wms_daily_kpi"
+        name="经营日报"
+        parent="menu_custom_wms_reporting_root"
+        action="action_custom_wms_daily_kpi"
+        sequence="10"/>
+
+    <menuitem id="menu_custom_wms_stock_exception_report"
+        name="库存预警"
+        parent="menu_custom_wms_reporting_root"
+        action="action_custom_wms_stock_exception"
+        sequence="20"/>
+
+    <menuitem id="menu_custom_wms_stock_value_rank"
+        name="库存占资TOP10"
+        parent="menu_custom_wms_reporting_root"
+        action="action_custom_wms_stock_value_rank"
+        sequence="25"
+        groups="base.group_system,custom_wms_base.group_wms_boss"/>
+
+    <menuitem id="menu_custom_wms_price_history"
+        name="价格变更记录"
+        parent="menu_custom_wms_reporting_root"
+        action="action_custom_wms_price_history"
+        sequence="30"/>
+
+    <menuitem id="menu_custom_wms_audit_log"
+        name="操作审计日志"
+        parent="menu_custom_wms_reporting_root"
+        action="action_custom_wms_audit_log"
+        sequence="40"
+        groups="base.group_system,custom_wms_base.group_wms_boss"/>
+
+    <record id="menu_custom_wms_reporting_root" model="ir.ui.menu">
+        <field name="group_ids" eval="[(6, 0, [ref('base.group_system'), ref('custom_wms_base.group_wms_boss'), ref('custom_wms_base.group_wms_sales_ops')])]"/>
+    </record>
+</odoo>

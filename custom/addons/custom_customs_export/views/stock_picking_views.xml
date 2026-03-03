@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_picking_form_customs_export_button" model="ir.ui.view">
+        <field name="name">stock.picking.form.customs.export.button</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header/button[@name='%(stock.act_stock_return_picking)d']" position="after">
+                <button
+                    name="action_open_customs_export_wizard"
+                    string="报关导出"
+                    type="object"
+                    class="btn-secondary"
+                    invisible="state != 'done' or picking_type_code != 'outgoing'"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

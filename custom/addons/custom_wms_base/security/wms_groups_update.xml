@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <function model="res.groups" name="write">
+            <value eval="[ref('custom_wms_base.group_wms_boss')]"/>
+            <value eval="{'implied_ids': [(4, ref('product.group_product_manager'))]}"/>
+        </function>
+    </data>
+</odoo>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_custom_customs_category_tree" model="ir.ui.view">
+        <field name="name">custom.customs.category.tree</field>
+        <field name="model">custom.customs.category</field>
+        <field name="arch" type="xml">
+            <list string="海关分类维护" editable="bottom">
+                <field name="category_type"/>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="active"/>
+                <field name="note"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_custom_customs_category_form" model="ir.ui.view">
+        <field name="name">custom.customs.category.form</field>
+        <field name="model">custom.customs.category</field>
+        <field name="arch" type="xml">
+            <form string="海关分类维护">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="category_type"/>
+                            <field name="name"/>
+                            <field name="code"/>
+                        </group>
+                        <group>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                    <field name="note"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_custom_customs_category_jp" model="ir.actions.act_window">
+        <field name="name">日本海关分类维护</field>
+        <field name="res_model">custom.customs.category</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('category_type', '=', 'jp')]</field>
+        <field name="context">{'default_category_type': 'jp'}</field>
+    </record>
+
+    <record id="action_custom_customs_category_cn" model="ir.actions.act_window">
+        <field name="name">中国海关分类维护</field>
+        <field name="res_model">custom.customs.category</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('category_type', '=', 'cn')]</field>
+        <field name="context">{'default_category_type': 'cn'}</field>
+    </record>
+
+    <menuitem id="menu_custom_wms_customs_category_jp"
+        name="日本海关分类维护"
+        parent="custom_wms_base.menu_custom_wms_master_data"
+        action="action_custom_customs_category_jp"
+        sequence="20"
+        groups="base.group_system,custom_wms_base.group_wms_boss"/>
+
+    <menuitem id="menu_custom_wms_customs_category_cn"
+        name="中国海关分类维护"
+        parent="custom_wms_base.menu_custom_wms_master_data"
+        action="action_custom_customs_category_cn"
+        sequence="30"
+        groups="base.group_system,custom_wms_base.group_wms_boss"/>
+</odoo>

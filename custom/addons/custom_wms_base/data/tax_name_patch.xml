@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Generic taxes -->
+        <function model="account.tax" name="write">
+            <value eval="[ref('account.1_sale_tax_template')]"/>
+            <value eval="{'name': '15%（通用｜销售税）'}"/>
+        </function>
+        <function model="account.tax" name="write">
+            <value eval="[ref('account.1_purchase_tax_template')]"/>
+            <value eval="{'name': '15%（通用｜采购税）'}"/>
+        </function>
+        <function model="account.tax" name="write">
+            <value eval="[ref('account.1_sale_export_tax_template')]"/>
+            <value eval="{'name': '0%（通用｜销售免税）'}"/>
+        </function>
+        <function model="account.tax" name="write">
+            <value eval="[ref('account.1_purchase_import_tax_template')]"/>
+            <value eval="{'name': '0%（通用｜采购免税）'}"/>
+        </function>
+
+        <!-- Japan taxes -->
+        <function model="account.tax" name="write">
+            <value eval="[ref('custom_wms_base.tax_sale_jp_10')]"/>
+            <value eval="{'name': '10%（日本｜销售税）'}"/>
+        </function>
+        <function model="account.tax" name="write">
+            <value eval="[ref('custom_wms_base.tax_sale_jp_08')]"/>
+            <value eval="{'name': '8%（日本｜销售税）'}"/>
+        </function>
+        <function model="account.tax" name="write">
+            <value eval="[ref('custom_wms_base.tax_sale_jp_00')]"/>
+            <value eval="{'name': '0%（日本｜销售免税）'}"/>
+        </function>
+        <function model="account.tax" name="write">
+            <value eval="[ref('custom_wms_base.tax_purchase_jp_10')]"/>
+            <value eval="{'name': '10%（日本｜采购税）'}"/>
+        </function>
+        <function model="account.tax" name="write">
+            <value eval="[ref('custom_wms_base.tax_purchase_jp_08')]"/>
+            <value eval="{'name': '8%（日本｜采购税）'}"/>
+        </function>
+        <function model="account.tax" name="write">
+            <value eval="[ref('custom_wms_base.tax_purchase_jp_00')]"/>
+            <value eval="{'name': '0%（日本｜采购免税）'}"/>
+        </function>
+
+        <!-- China taxes -->
+        <function model="account.tax" name="write">
+            <value eval="[ref('custom_wms_base.tax_sale_cn_13')]"/>
+            <value eval="{'name': '13%（中国｜销售增值税）'}"/>
+        </function>
+        <function model="account.tax" name="write">
+            <value eval="[ref('custom_wms_base.tax_sale_cn_09')]"/>
+            <value eval="{'name': '9%（中国｜销售增值税）'}"/>
+        </function>
+        <function model="account.tax" name="write">
+            <value eval="[ref('custom_wms_base.tax_sale_cn_06')]"/>
+            <value eval="{'name': '6%（中国｜销售增值税）'}"/>
+        </function>
+        <function model="account.tax" name="write">
+            <value eval="[ref('custom_wms_base.tax_sale_cn_00')]"/>
+            <value eval="{'name': '0%（中国｜销售免税）'}"/>
+        </function>
+        <function model="account.tax" name="write">
+            <value eval="[ref('custom_wms_base.tax_purchase_cn_13')]"/>
+            <value eval="{'name': '13%（中国｜采购增值税）'}"/>
+        </function>
+        <function model="account.tax" name="write">
+            <value eval="[ref('custom_wms_base.tax_purchase_cn_09')]"/>
+            <value eval="{'name': '9%（中国｜采购增值税）'}"/>
+        </function>
+        <function model="account.tax" name="write">
+            <value eval="[ref('custom_wms_base.tax_purchase_cn_06')]"/>
+            <value eval="{'name': '6%（中国｜采购增值税）'}"/>
+        </function>
+        <function model="account.tax" name="write">
+            <value eval="[ref('custom_wms_base.tax_purchase_cn_00')]"/>
+            <value eval="{'name': '0%（中国｜采购免税）'}"/>
+        </function>
+    </data>
+</odoo>

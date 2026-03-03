@@ -1,0 +1,39 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_custom_customs_category_system,custom.customs.category system,model_custom_customs_category,base.group_system,1,1,1,1
+access_custom_customs_category_boss,custom.customs.category boss,model_custom_customs_category,custom_wms_base.group_wms_boss,1,1,1,1
+access_custom_customs_category_warehouse,custom.customs.category warehouse,model_custom_customs_category,custom_wms_base.group_wms_warehouse_ops,1,0,0,0
+access_custom_customs_category_sales,custom.customs.category sales,model_custom_customs_category,custom_wms_base.group_wms_sales_ops,1,0,0,0
+access_custom_product_import_wizard_user,custom.product.import.wizard user,model_custom_product_import_wizard,base.group_user,1,1,1,1
+access_custom_wms_price_history_boss,custom.wms.price.history boss,model_custom_wms_price_history,custom_wms_base.group_wms_boss,1,0,0,0
+access_custom_wms_price_history_warehouse,custom.wms.price.history warehouse,model_custom_wms_price_history,custom_wms_base.group_wms_warehouse_ops,1,0,0,0
+access_custom_wms_price_history_sales,custom.wms.price.history sales,model_custom_wms_price_history,custom_wms_base.group_wms_sales_ops,1,0,0,0
+access_custom_wms_price_history_system,custom.wms.price.history system,model_custom_wms_price_history,base.group_system,1,1,1,1
+access_custom_wms_audit_log_system,custom.wms.audit.log system,model_custom_wms_audit_log,base.group_system,1,1,1,1
+access_custom_wms_audit_log_boss,custom.wms.audit.log boss,model_custom_wms_audit_log,custom_wms_base.group_wms_boss,1,0,0,0
+access_custom_wms_stock_exception_system,custom.wms.stock.exception system,model_custom_wms_stock_exception,base.group_system,1,1,1,1
+access_custom_wms_stock_exception_boss,custom.wms.stock.exception boss,model_custom_wms_stock_exception,custom_wms_base.group_wms_boss,1,0,0,0
+access_custom_wms_stock_exception_warehouse,custom.wms.stock.exception warehouse,model_custom_wms_stock_exception,custom_wms_base.group_wms_warehouse_ops,1,0,0,0
+access_custom_wms_stock_exception_sales,custom.wms.stock.exception sales,model_custom_wms_stock_exception,custom_wms_base.group_wms_sales_ops,1,0,0,0
+access_custom_wms_daily_kpi_system,custom.wms.daily.kpi system,model_custom_wms_daily_kpi,base.group_system,1,0,0,0
+access_custom_wms_daily_kpi_boss,custom.wms.daily.kpi boss,model_custom_wms_daily_kpi,custom_wms_base.group_wms_boss,1,0,0,0
+access_custom_wms_daily_kpi_warehouse,custom.wms.daily.kpi warehouse,model_custom_wms_daily_kpi,custom_wms_base.group_wms_warehouse_ops,1,0,0,0
+access_custom_wms_daily_kpi_sales,custom.wms.daily.kpi sales,model_custom_wms_daily_kpi,custom_wms_base.group_wms_sales_ops,1,0,0,0
+access_custom_wms_stock_value_rank_system,custom.wms.stock.value.rank system,model_custom_wms_stock_value_rank,base.group_system,1,1,1,1
+access_custom_wms_stock_value_rank_boss,custom.wms.stock.value.rank boss,model_custom_wms_stock_value_rank,custom_wms_base.group_wms_boss,1,0,0,0
+access_custom_wms_stock_value_rank_warehouse,custom.wms.stock.value.rank warehouse,model_custom_wms_stock_value_rank,custom_wms_base.group_wms_warehouse_ops,1,0,0,0
+access_custom_wms_stock_value_rank_sales,custom.wms.stock.value.rank sales,model_custom_wms_stock_value_rank,custom_wms_base.group_wms_sales_ops,1,0,0,0
+access_custom_wms_role_dashboard_system,custom.wms.role.dashboard system,model_custom_wms_role_dashboard,base.group_system,1,1,1,1
+access_custom_wms_role_dashboard_boss,custom.wms.role.dashboard boss,model_custom_wms_role_dashboard,custom_wms_base.group_wms_boss,1,1,1,0
+access_custom_wms_role_dashboard_warehouse,custom.wms.role.dashboard warehouse,model_custom_wms_role_dashboard,custom_wms_base.group_wms_warehouse_ops,1,1,1,0
+access_custom_wms_role_dashboard_service,custom.wms.role.dashboard service,model_custom_wms_role_dashboard,custom_wms_base.group_wms_service_ops,1,1,1,0
+access_custom_wms_service_ticket_system,custom.wms.service.ticket system,model_custom_wms_service_ticket,base.group_system,1,1,1,1
+access_custom_wms_service_ticket_boss,custom.wms.service.ticket boss,model_custom_wms_service_ticket,custom_wms_base.group_wms_boss,1,1,1,1
+access_custom_wms_service_ticket_service,custom.wms.service.ticket service,model_custom_wms_service_ticket,custom_wms_base.group_wms_service_ops,1,1,1,1
+access_custom_wms_service_ticket_sales,custom.wms.service.ticket sales,model_custom_wms_service_ticket,custom_wms_base.group_wms_sales_ops,1,0,0,0
+access_custom_wms_onboarding_user,custom.wms.onboarding user,model_custom_wms_onboarding,base.group_user,1,0,0,0
+access_custom_wms_onboarding_boss,custom.wms.onboarding boss,model_custom_wms_onboarding,custom_wms_base.group_wms_boss,1,1,1,1
+access_custom_wms_onboarding_system,custom.wms.onboarding system,model_custom_wms_onboarding,base.group_system,1,1,1,1
+access_custom_wms_flow_step_system,custom.wms.flow.step system,model_custom_wms_flow_step,base.group_system,1,1,1,1
+access_product_pricelist_wms_sales_ops,product.pricelist wms sales ops,product.model_product_pricelist,custom_wms_base.group_wms_sales_ops,1,1,1,1
+access_product_pricelist_item_wms_sales_ops,product.pricelist.item wms sales ops,product.model_product_pricelist_item,custom_wms_base.group_wms_sales_ops,1,1,1,1
+access_custom_wms_flow_step_boss,custom.wms.flow.step boss,model_custom_wms_flow_step,custom_wms_base.group_wms_boss,1,1,1,0

@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_custom_cn_sync_config_boss,custom.cn.sync.config boss,model_custom_cn_sync_config,custom_wms_base.group_wms_boss,1,1,1,1
+access_custom_cn_sync_job_boss,custom.cn.sync.job boss,model_custom_cn_sync_job,custom_wms_base.group_wms_boss,1,1,1,1
+access_custom_cn_sync_job_warehouse,custom.cn.sync.job warehouse,model_custom_cn_sync_job,custom_wms_base.group_wms_warehouse_ops,1,1,1,0
+access_custom_cn_sync_job_sales,custom.cn.sync.job sales,model_custom_cn_sync_job,custom_wms_base.group_wms_sales_ops,1,0,0,0
+access_custom_cn_stock_snapshot_boss,custom.cn.stock.snapshot boss,model_custom_cn_stock_snapshot,custom_wms_base.group_wms_boss,1,1,1,1
+access_custom_cn_stock_snapshot_warehouse,custom.cn.stock.snapshot warehouse,model_custom_cn_stock_snapshot,custom_wms_base.group_wms_warehouse_ops,1,1,1,0
+access_custom_cn_stock_snapshot_sales,custom.cn.stock.snapshot sales,model_custom_cn_stock_snapshot,custom_wms_base.group_wms_sales_ops,1,0,0,0

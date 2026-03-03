@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_customs_export_wizard_form" model="ir.ui.view">
+        <field name="name">custom.customs.export.wizard.form</field>
+        <field name="model">custom.customs.export.wizard</field>
+        <field name="arch" type="xml">
+            <form string="报关导出">
+                <group>
+                    <group>
+                        <field name="date_from"/>
+                        <field name="date_to"/>
+                        <button name="action_load_pickings_by_date" type="object" string="按日期加载出库单"/>
+                    </group>
+                    <group>
+                        <field name="picking_ids" widget="many2many_tags" options="{'no_create': True}"/>
+                    </group>
+                </group>
+                <group>
+                    <field name="file_name" readonly="1"/>
+                </group>
+                <footer>
+                    <button name="action_generate_xlsx" type="object" string="生成Excel" class="oe_highlight"/>
+                    <button name="action_download_file" type="object" string="下载文件" invisible="not file_data"/>
+                    <button special="cancel" string="关闭"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_customs_export_wizard" model="ir.actions.act_window">
+        <field name="name">报关导出</field>
+        <field name="res_model">custom.customs.export.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_customs_export"
+        name="报关导出"
+        parent="custom_wms_base.menu_custom_wms_reporting_root"
+        action="action_customs_export_wizard"
+        sequence="50"
+        groups="custom_wms_base.group_wms_boss,custom_wms_base.group_wms_warehouse_ops,custom_wms_base.group_wms_sales_ops"/>
+</odoo>

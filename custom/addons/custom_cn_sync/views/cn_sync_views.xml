@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_custom_cn_sync_job_tree" model="ir.ui.view">
+        <field name="name">custom.cn.sync.job.tree</field>
+        <field name="model">custom.cn.sync.job</field>
+        <field name="arch" type="xml">
+            <list string="CN Sync Jobs" default_order="create_date desc" decoration-success="state == 'done'" decoration-danger="state == 'failed'" decoration-warning="state == 'pending'">
+                <field name="name"/>
+                <field name="create_date"/>
+                <field name="direction"/>
+                <field name="picking_id"/>
+                <field name="state"/>
+                <field name="retry_count"/>
+                <field name="next_try"/>
+                <field name="response_message"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_custom_cn_sync_job_form" model="ir.ui.view">
+        <field name="name">custom.cn.sync.job.form</field>
+        <field name="model">custom.cn.sync.job</field>
+        <field name="arch" type="xml">
+            <form string="CN Sync Job">
+                <header>
+                    <button name="action_process_now" type="object" string="Process Now" class="oe_highlight" invisible="state == 'done'"/>
+                    <button name="action_mark_pending" type="object" string="Reset to Pending" invisible="state == 'pending'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="pending,processing,done,failed"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" readonly="1"/>
+                            <field name="direction"/>
+                            <field name="picking_id"/>
+                            <field name="company_id"/>
+                        </group>
+                        <group>
+                            <field name="retry_count"/>
+                            <field name="last_try"/>
+                            <field name="next_try"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Payload">
+                            <field name="payload_json" widget="text"/>
+                        </page>
+                        <page string="Result">
+                            <field name="response_message" widget="text"/>
+                            <field name="error_details" widget="text"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_custom_cn_sync_job_search" model="ir.ui.view">
+        <field name="name">custom.cn.sync.job.search</field>
+        <field name="model">custom.cn.sync.job</field>
+        <field name="arch" type="xml">
+            <search string="CN Sync Jobs">
+                <field name="name"/>
+                <field name="picking_id"/>
+                <filter string="Pending" name="pending" domain="[('state', '=', 'pending')]"/>
+                <filter string="Failed" name="failed" domain="[('state', '=', 'failed')]"/>
+                <filter string="Done" name="done" domain="[('state', '=', 'done')]"/>
+                <separator/>
+                <filter string="Outbound" name="outbound" domain="[('direction', '=', 'outbound')]"/>
+                <group name="group_by">
+                    <filter string="State" name="group_state" domain="[]" context="{'group_by': 'state'}"/>
+                    <filter string="Direction" name="group_direction" domain="[]" context="{'group_by': 'direction'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_custom_cn_sync_job" model="ir.actions.act_window">
+        <field name="name">中国仓同步任务</field>
+        <field name="res_model">custom.cn.sync.job</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_custom_cn_sync_job_search"/>
+    </record>
+
+    <record id="view_custom_cn_stock_snapshot_tree" model="ir.ui.view">
+        <field name="name">custom.cn.stock.snapshot.tree</field>
+        <field name="model">custom.cn.stock.snapshot</field>
+        <field name="arch" type="xml">
+            <list string="CN Stock Snapshots" editable="bottom">
+                <field name="product_tmpl_id"/>
+                <field name="sku"/>
+                <field name="warehouse_code"/>
+                <field name="available_qty"/>
+                <field name="synced_at"/>
+                <field name="note"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_custom_cn_stock_snapshot_form" model="ir.ui.view">
+        <field name="name">custom.cn.stock.snapshot.form</field>
+        <field name="model">custom.cn.stock.snapshot</field>
+        <field name="arch" type="xml">
+            <form string="CN Stock Snapshot">
+                <header>
+                    <button name="action_apply_to_product" type="object" string="Apply to Product" class="oe_highlight"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="product_tmpl_id"/>
+                            <field name="product_id" readonly="1"/>
+                            <field name="sku"/>
+                        </group>
+                        <group>
+                            <field name="warehouse_code"/>
+                            <field name="available_qty"/>
+                            <field name="synced_at"/>
+                        </group>
+                    </group>
+                    <field name="note"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_custom_cn_stock_snapshot" model="ir.actions.act_window">
+        <field name="name">中国仓库存快照</field>
+        <field name="res_model">custom.cn.stock.snapshot</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="view_custom_cn_sync_config_tree" model="ir.ui.view">
+        <field name="name">custom.cn.sync.config.tree</field>
+        <field name="model">custom.cn.sync.config</field>
+        <field name="arch" type="xml">
+            <list string="CN Sync Configurations">
+                <field name="name"/>
+                <field name="active"/>
+                <field name="enabled"/>
+                <field name="mode"/>
+                <field name="endpoint_url"/>
+                <field name="timeout_seconds"/>
+                <field name="max_retries"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_custom_cn_sync_config_form" model="ir.ui.view">
+        <field name="name">custom.cn.sync.config.form</field>
+        <field name="model">custom.cn.sync.config</field>
+        <field name="arch" type="xml">
+            <form string="CN Sync Configuration">
+                <header>
+                    <button name="action_open_pending_jobs" type="object" string="Pending Jobs" class="oe_highlight"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="active"/>
+                            <field name="enabled"/>
+                            <field name="mode"/>
+                        </group>
+                        <group>
+                            <field name="endpoint_url" placeholder="https://api.example.com/sync"/>
+                            <field name="api_token" password="True"/>
+                            <field name="timeout_seconds"/>
+                            <field name="max_retries"/>
+                        </group>
+                    </group>
+                    <field name="note" placeholder="Integration notes..."/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_custom_cn_sync_config" model="ir.actions.act_window">
+        <field name="name">中国仓同步配置</field>
+        <field name="res_model">custom.cn.sync.config</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_custom_cn_sync_root"
+        name="中国仓同步"
+        parent="custom_wms_base.menu_custom_wms_reporting_root"
+        sequence="80"
+        groups="custom_wms_base.group_wms_boss,custom_wms_base.group_wms_warehouse_ops,custom_wms_base.group_wms_sales_ops"/>
+
+    <menuitem id="menu_custom_cn_sync_jobs"
+        name="同步任务"
+        parent="menu_custom_cn_sync_root"
+        action="action_custom_cn_sync_job"
+        sequence="10"/>
+
+    <menuitem id="menu_custom_cn_sync_snapshots"
+        name="库存快照"
+        parent="menu_custom_cn_sync_root"
+        action="action_custom_cn_stock_snapshot"
+        sequence="20"/>
+
+    <menuitem id="menu_custom_cn_sync_config"
+        name="接口配置"
+        parent="menu_custom_cn_sync_root"
+        action="action_custom_cn_sync_config"
+        sequence="90"
+        groups="custom_wms_base.group_wms_boss"/>
+</odoo>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="custom_customs_category_jp_skincare" model="custom.customs.category">
+        <field name="category_type">jp</field>
+        <field name="name">护肤品</field>
+        <field name="code">JP-001</field>
+    </record>
+    <record id="custom_customs_category_jp_makeup" model="custom.customs.category">
+        <field name="category_type">jp</field>
+        <field name="name">彩妆</field>
+        <field name="code">JP-002</field>
+    </record>
+    <record id="custom_customs_category_jp_personal" model="custom.customs.category">
+        <field name="category_type">jp</field>
+        <field name="name">个护</field>
+        <field name="code">JP-003</field>
+    </record>
+
+    <record id="custom_customs_category_cn_skincare" model="custom.customs.category">
+        <field name="category_type">cn</field>
+        <field name="name">化妆品</field>
+        <field name="code">CN-001</field>
+    </record>
+    <record id="custom_customs_category_cn_makeup" model="custom.customs.category">
+        <field name="category_type">cn</field>
+        <field name="name">洗护用品</field>
+        <field name="code">CN-002</field>
+    </record>
+    <record id="custom_customs_category_cn_personal" model="custom.customs.category">
+        <field name="category_type">cn</field>
+        <field name="name">日化用品</field>
+        <field name="code">CN-003</field>
+    </record>
+</odoo>

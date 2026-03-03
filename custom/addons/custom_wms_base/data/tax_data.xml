@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Tax groups -->
+        <record id="tax_group_sale_jp" model="account.tax.group">
+            <field name="name">JP 销售税组</field>
+            <field name="country_id" ref="base.jp"/>
+            <field name="sequence">10</field>
+        </record>
+        <record id="tax_group_purchase_jp" model="account.tax.group">
+            <field name="name">JP 采购税组</field>
+            <field name="country_id" ref="base.jp"/>
+            <field name="sequence">20</field>
+        </record>
+        <record id="tax_group_sale_cn" model="account.tax.group">
+            <field name="name">CN 销售税组</field>
+            <field name="country_id" ref="base.cn"/>
+            <field name="sequence">30</field>
+        </record>
+        <record id="tax_group_purchase_cn" model="account.tax.group">
+            <field name="name">CN 采购税组</field>
+            <field name="country_id" ref="base.cn"/>
+            <field name="sequence">40</field>
+        </record>
+
+        <!-- Japan sales taxes -->
+        <record id="tax_sale_jp_10" model="account.tax">
+            <field name="name">JP 销售税 10%</field>
+            <field name="amount_type">percent</field>
+            <field name="amount">10.0</field>
+            <field name="type_tax_use">sale</field>
+            <field name="country_id" ref="base.jp"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="tax_group_id" ref="custom_wms_base.tax_group_sale_jp"/>
+            <field name="active">True</field>
+        </record>
+        <record id="tax_sale_jp_08" model="account.tax">
+            <field name="name">JP 销售税 8%</field>
+            <field name="amount_type">percent</field>
+            <field name="amount">8.0</field>
+            <field name="type_tax_use">sale</field>
+            <field name="country_id" ref="base.jp"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="tax_group_id" ref="custom_wms_base.tax_group_sale_jp"/>
+            <field name="active">True</field>
+        </record>
+        <record id="tax_sale_jp_00" model="account.tax">
+            <field name="name">JP 销售免税 0%</field>
+            <field name="amount_type">percent</field>
+            <field name="amount">0.0</field>
+            <field name="type_tax_use">sale</field>
+            <field name="country_id" ref="base.jp"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="tax_group_id" ref="custom_wms_base.tax_group_sale_jp"/>
+            <field name="active">True</field>
+        </record>
+
+        <!-- Japan purchase taxes -->
+        <record id="tax_purchase_jp_10" model="account.tax">
+            <field name="name">JP 采购税 10%</field>
+            <field name="amount_type">percent</field>
+            <field name="amount">10.0</field>
+            <field name="type_tax_use">purchase</field>
+            <field name="country_id" ref="base.jp"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="tax_group_id" ref="custom_wms_base.tax_group_purchase_jp"/>
+            <field name="active">True</field>
+        </record>
+        <record id="tax_purchase_jp_08" model="account.tax">
+            <field name="name">JP 采购税 8%</field>
+            <field name="amount_type">percent</field>
+            <field name="amount">8.0</field>
+            <field name="type_tax_use">purchase</field>
+            <field name="country_id" ref="base.jp"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="tax_group_id" ref="custom_wms_base.tax_group_purchase_jp"/>
+            <field name="active">True</field>
+        </record>
+        <record id="tax_purchase_jp_00" model="account.tax">
+            <field name="name">JP 采购免税 0%</field>
+            <field name="amount_type">percent</field>
+            <field name="amount">0.0</field>
+            <field name="type_tax_use">purchase</field>
+            <field name="country_id" ref="base.jp"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="tax_group_id" ref="custom_wms_base.tax_group_purchase_jp"/>
+            <field name="active">True</field>
+        </record>
+
+        <!-- China sales taxes -->
+        <record id="tax_sale_cn_13" model="account.tax">
+            <field name="name">CN 销售增值税 13%</field>
+            <field name="amount_type">percent</field>
+            <field name="amount">13.0</field>
+            <field name="type_tax_use">sale</field>
+            <field name="country_id" ref="base.cn"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="tax_group_id" ref="custom_wms_base.tax_group_sale_cn"/>
+            <field name="active">True</field>
+        </record>
+        <record id="tax_sale_cn_09" model="account.tax">
+            <field name="name">CN 销售增值税 9%</field>
+            <field name="amount_type">percent</field>
+            <field name="amount">9.0</field>
+            <field name="type_tax_use">sale</field>
+            <field name="country_id" ref="base.cn"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="tax_group_id" ref="custom_wms_base.tax_group_sale_cn"/>
+            <field name="active">True</field>
+        </record>
+        <record id="tax_sale_cn_06" model="account.tax">
+            <field name="name">CN 销售增值税 6%</field>
+            <field name="amount_type">percent</field>
+            <field name="amount">6.0</field>
+            <field name="type_tax_use">sale</field>
+            <field name="country_id" ref="base.cn"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="tax_group_id" ref="custom_wms_base.tax_group_sale_cn"/>
+            <field name="active">True</field>
+        </record>
+        <record id="tax_sale_cn_00" model="account.tax">
+            <field name="name">CN 销售免税 0%</field>
+            <field name="amount_type">percent</field>
+            <field name="amount">0.0</field>
+            <field name="type_tax_use">sale</field>
+            <field name="country_id" ref="base.cn"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="tax_group_id" ref="custom_wms_base.tax_group_sale_cn"/>
+            <field name="active">True</field>
+        </record>
+
+        <!-- China purchase taxes -->
+        <record id="tax_purchase_cn_13" model="account.tax">
+            <field name="name">CN 采购增值税 13%</field>
+            <field name="amount_type">percent</field>
+            <field name="amount">13.0</field>
+            <field name="type_tax_use">purchase</field>
+            <field name="country_id" ref="base.cn"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="tax_group_id" ref="custom_wms_base.tax_group_purchase_cn"/>
+            <field name="active">True</field>
+        </record>
+        <record id="tax_purchase_cn_09" model="account.tax">
+            <field name="name">CN 采购增值税 9%</field>
+            <field name="amount_type">percent</field>
+            <field name="amount">9.0</field>
+            <field name="type_tax_use">purchase</field>
+            <field name="country_id" ref="base.cn"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="tax_group_id" ref="custom_wms_base.tax_group_purchase_cn"/>
+            <field name="active">True</field>
+        </record>
+        <record id="tax_purchase_cn_06" model="account.tax">
+            <field name="name">CN 采购增值税 6%</field>
+            <field name="amount_type">percent</field>
+            <field name="amount">6.0</field>
+            <field name="type_tax_use">purchase</field>
+            <field name="country_id" ref="base.cn"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="tax_group_id" ref="custom_wms_base.tax_group_purchase_cn"/>
+            <field name="active">True</field>
+        </record>
+        <record id="tax_purchase_cn_00" model="account.tax">
+            <field name="name">CN 采购免税 0%</field>
+            <field name="amount_type">percent</field>
+            <field name="amount">0.0</field>
+            <field name="type_tax_use">purchase</field>
+            <field name="country_id" ref="base.cn"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="tax_group_id" ref="custom_wms_base.tax_group_purchase_cn"/>
+            <field name="active">True</field>
+        </record>
+    </data>
+</odoo>

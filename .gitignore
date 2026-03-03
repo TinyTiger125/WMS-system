@@ -1,0 +1,31 @@
+# Runtime and local env
+.venv/
+*.log
+.odoo.pid
+*.pid
+__pycache__/
+*.pyc
+*.pyo
+.DS_Store
+
+# Local DB backups and build artifacts
+backups/
+dist/
+
+# Local deploy secrets
+deploy/.env
+
+# Upstream Odoo source/vendor (product repo keeps only custom delivery code)
+odoo/
+odoo.egg-info/
+setup/
+PKG-INFO
+MANIFEST.in
+setup.py
+setup.cfg
+requirements.txt
+README.md
+LICENSE
+
+# macOS
+*.swp

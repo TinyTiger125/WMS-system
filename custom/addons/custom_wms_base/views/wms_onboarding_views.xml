@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_custom_wms_onboarding_list" model="ir.ui.view">
+        <field name="name">custom.wms.onboarding.list</field>
+        <field name="model">custom.wms.onboarding</field>
+        <field name="arch" type="xml">
+            <list string="15分钟上手指南" default_order="role_scope, step_no">
+                <field name="role_scope"/>
+                <field name="step_no"/>
+                <field name="name"/>
+                <field name="operation_path"/>
+                <field name="operation_hint"/>
+                <field name="expected_result"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_custom_wms_onboarding_form" model="ir.ui.view">
+        <field name="name">custom.wms.onboarding.form</field>
+        <field name="model">custom.wms.onboarding</field>
+        <field name="arch" type="xml">
+            <form string="上手指南步骤">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="role_scope"/>
+                            <field name="step_no"/>
+                            <field name="name"/>
+                        </group>
+                        <group>
+                            <field name="operation_path"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="operation_hint"/>
+                        <field name="expected_result"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_custom_wms_onboarding_search" model="ir.ui.view">
+        <field name="name">custom.wms.onboarding.search</field>
+        <field name="model">custom.wms.onboarding</field>
+        <field name="arch" type="xml">
+            <search string="上手指南">
+                <field name="name"/>
+                <filter string="通用" name="role_all" domain="[('role_scope','=','all')]"/>
+                <filter string="老板" name="role_boss" domain="[('role_scope','=','boss')]"/>
+                <filter string="仓库" name="role_warehouse" domain="[('role_scope','=','warehouse')]"/>
+                <filter string="销售" name="role_sales" domain="[('role_scope','=','sales')]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_custom_wms_onboarding" model="ir.actions.act_window">
+        <field name="name">15分钟上手指南</field>
+        <field name="res_model">custom.wms.onboarding</field>
+        <field name="view_mode">list</field>
+        <field name="search_view_id" ref="view_custom_wms_onboarding_search"/>
+        <field name="help" type="html">
+            <p>先看“通用”，再看你的角色步骤，按顺序执行。</p>
+        </field>
+    </record>
+
+    <record id="action_custom_wms_onboarding_help" model="ir.actions.server">
+        <field name="name">打开新手上手指南</field>
+        <field name="model_id" ref="base.model_res_users"/>
+        <field name="state">code</field>
+        <field name="code">action = env['ir.actions.act_window']._for_xml_id('custom_wms_base.action_custom_wms_onboarding')</field>
+    </record>
+</odoo>

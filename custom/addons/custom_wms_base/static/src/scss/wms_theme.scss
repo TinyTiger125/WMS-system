@@ -1,0 +1,38 @@
+.o_web_client {
+    --wms-brand-1: #0f5e7f;
+    --wms-brand-2: #0a7a5f;
+    --wms-surface: #f4f7f9;
+    --wms-card: #ffffff;
+}
+
+.o_web_client .o_main_navbar {
+    background: linear-gradient(90deg, var(--wms-brand-1), var(--wms-brand-2));
+    border-bottom: 0;
+}
+
+.o_web_client .o_main_navbar .o_menu_sections .dropdown-toggle,
+.o_web_client .o_main_navbar .o_menu_sections .o_nav_entry,
+.o_web_client .o_main_navbar .o_menu_systray,
+.o_web_client .o_main_navbar .o_menu_systray .dropdown-toggle {
+    color: #eef7fb !important;
+}
+
+.o_web_client .o_action_manager {
+    background: radial-gradient(circle at top right, #e7f4ec 0, transparent 30%), var(--wms-surface);
+}
+
+.o_web_client .o_control_panel .btn-primary {
+    background: var(--wms-brand-1);
+    border-color: var(--wms-brand-1);
+}
+
+.o_web_client .o_form_view .oe_button_box .oe_stat_button {
+    border-radius: 10px;
+    background: var(--wms-card);
+    border: 1px solid #d7e0e6;
+}
+
+.o_web_client .o_list_view table thead th {
+    background: #eef4f7;
+    color: #1f3742;
+}

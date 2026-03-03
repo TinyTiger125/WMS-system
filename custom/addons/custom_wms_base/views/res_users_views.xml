@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_users_form_wms_role_panel" model="ir.ui.view">
+        <field name="name">res.users.form.wms.role.panel</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='access_rights']" position="inside">
+                <group string="WMS 角色权限设置" groups="base.group_system">
+                    <group>
+                        <field name="wms_role_boss"/>
+                        <field name="wms_role_warehouse"/>
+                        <field name="wms_role_sales"/>
+                        <field name="wms_role_service"/>
+                    </group>
+                    <group string="权限范围预览（自动计算）">
+                        <field name="wms_can_purchase_order" readonly="1"/>
+                        <field name="wms_can_purchase_receipt" readonly="1"/>
+                        <field name="wms_can_sales_order" readonly="1"/>
+                        <field name="wms_can_sales_delivery" readonly="1"/>
+                        <field name="wms_can_reporting" readonly="1"/>
+                    </group>
+                    <div class="o_form_label text-muted">
+                        说明：老板角色默认含采购与销售完整权限；库管以入库/出库执行为主。
+                    </div>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

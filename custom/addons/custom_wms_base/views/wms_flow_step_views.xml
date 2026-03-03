@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_custom_wms_flow_step_list" model="ir.ui.view">
+        <field name="name">custom.wms.flow.step.list</field>
+        <field name="model">custom.wms.flow.step</field>
+        <field name="arch" type="xml">
+            <list string="业务推进流配置" default_order="source_model, trigger_key, role_scope, sequence">
+                <field name="active"/>
+                <field name="sequence"/>
+                <field name="name"/>
+                <field name="flow_entry"/>
+                <field name="source_states"/>
+                <field name="role_scope"/>
+                <field name="action_id"/>
+                <field name="action_xmlid" optional="hide"/>
+                <field name="source_model" optional="hide"/>
+                <field name="trigger_key" optional="hide"/>
+                <field name="apply_all_companies"/>
+                <field name="company_id" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_custom_wms_flow_step_form" model="ir.ui.view">
+        <field name="name">custom.wms.flow.step.form</field>
+        <field name="model">custom.wms.flow.step</field>
+        <field name="arch" type="xml">
+            <form string="业务推进步骤">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="active"/>
+                            <field name="sequence"/>
+                            <field name="name"/>
+                            <field name="flow_entry"/>
+                            <field name="description"/>
+                            <field name="role_scope"/>
+                        </group>
+                        <group>
+                            <field name="action_id" domain="[('type', 'in', ['ir.actions.act_window','ir.actions.server','ir.actions.client','ir.actions.report','ir.actions.act_url'])]"/>
+                            <field name="action_xmlid" invisible="action_id"/>
+                            <field name="source_states"/>
+                        </group>
+                    </group>
+                    <group string="高级（技术）" groups="base.group_system">
+                        <group>
+                            <field name="source_model"/>
+                            <field name="trigger_key"/>
+                        </group>
+                    </group>
+                    <group string="公司范围">
+                        <field name="apply_all_companies"/>
+                        <field name="company_id" invisible="apply_all_companies"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_custom_wms_flow_step_search" model="ir.ui.view">
+        <field name="name">custom.wms.flow.step.search</field>
+        <field name="model">custom.wms.flow.step</field>
+        <field name="arch" type="xml">
+            <search string="业务推进步骤">
+                <field name="name"/>
+                <field name="flow_entry"/>
+                <field name="action_id"/>
+                <filter string="启用" name="active_only" domain="[('active', '=', True)]"/>
+                <filter string="老板" name="role_boss" domain="[('role_scope','=','boss')]"/>
+                <filter string="库管" name="role_warehouse" domain="[('role_scope','=','warehouse')]"/>
+                <filter string="客服" name="role_service" domain="[('role_scope','=','service')]"/>
+                <filter string="销售" name="role_sales" domain="[('role_scope','=','sales')]"/>
+                <group name="group_by">
+                    <filter string="流程入口" name="group_entry" context="{'group_by': 'flow_entry'}"/>
+                    <filter string="角色" name="group_role" context="{'group_by': 'role_scope'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_custom_wms_flow_step" model="ir.actions.act_window">
+        <field name="name">业务推进流配置</field>
+        <field name="res_model">custom.wms.flow.step</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_custom_wms_flow_step_search"/>
+        <field name="help" type="html">
+            <p>按角色、来源单据和状态定义“下一步”跳转目标，不改代码即可调整工作流。</p>
+        </field>
+    </record>
+</odoo>
