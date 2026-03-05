@@ -22,8 +22,7 @@ odoo \
   --db_port="${DB_PORT}" \
   --db_user="${DB_USER}" \
   --db_password="${DB_PASSWORD}" \
-  --db_name="${ODOO_DB_NAME}" \
-  --admin-passwd="${ODOO_ADMIN_PASSWD}" \
+  -d "${ODOO_DB_NAME}" \
   --addons-path="${ODOO_ADDONS_PATH}" \
   -i "${ODOO_INIT_MODULES}" \
   --without-demo=all \
@@ -35,8 +34,7 @@ odoo \
   --db_port="${DB_PORT}" \
   --db_user="${DB_USER}" \
   --db_password="${DB_PASSWORD}" \
-  --db_name="${ODOO_DB_NAME}" \
-  --admin-passwd="${ODOO_ADMIN_PASSWD}" \
+  -d "${ODOO_DB_NAME}" \
   --addons-path="${ODOO_ADDONS_PATH}" \
   -u "${ODOO_UPGRADE_MODULES}" \
   --without-demo=all \

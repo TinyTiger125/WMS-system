@@ -278,9 +278,6 @@
         action="action_custom_wms_flow_step"
         sequence="40"/>
 
-    <record id="menu_custom_wms_onboarding" model="ir.ui.menu">
-        <field name="active">False</field>
-    </record>
     <record id="purchase.menu_purchase_rfq" model="ir.ui.menu">
         <field name="active">False</field>
     </record>
