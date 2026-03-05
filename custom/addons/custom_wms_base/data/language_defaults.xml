@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="base.lang_zh_CN" model="res.lang">
+            <field name="active">True</field>
+        </record>
+        <function model="custom.wms.language.defaults" name="apply_defaults"/>
+    </data>
+</odoo>

@@ -21,6 +21,7 @@ Includes role groups and product customs fields used by downstream modules.
         'security/wms_groups.xml',
         'security/wms_groups_update.xml',
         'security/ir.model.access.csv',
+        'data/language_defaults.xml',
         'data/currency_activate.xml',
         'data/tax_data.xml',
         'data/customs_category_data.xml',
