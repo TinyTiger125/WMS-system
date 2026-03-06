@@ -1,10 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <record id="view_users_list_wms_quick_create_button" model="ir.ui.view">
+        <field name="name">res.users.list.wms.quick.create.button</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_list"/>
+        <field name="arch" type="xml">
+            <xpath expr="//list" position="inside">
+                <header>
+                    <button name="%(custom_wms_base.action_custom_wms_user_quick_create)d"
+                        type="action"
+                        string="快速创建账号"
+                        class="btn-primary"/>
+                </header>
+            </xpath>
+        </field>
+    </record>
+
     <record id="view_users_form_wms_role_panel" model="ir.ui.view">
         <field name="name">res.users.form.wms.role.panel</field>
         <field name="model">res.users</field>
         <field name="inherit_id" ref="base.view_users_form"/>
         <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="%(custom_wms_base.action_custom_wms_user_quick_create)d"
+                    type="action"
+                    string="快速创建账号"
+                    class="btn-secondary"
+                    groups="base.group_system"/>
+            </xpath>
             <xpath expr="//page[@name='access_rights']" position="inside">
                 <group string="WMS 角色权限设置" groups="base.group_system">
                     <group>

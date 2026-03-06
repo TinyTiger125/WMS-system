@@ -272,13 +272,6 @@
         sequence="20"
         groups="base.group_system"/>
 
-    <menuitem id="menu_custom_wms_user_quick_create"
-        name="快速创建账号"
-        parent="menu_custom_wms_master_data"
-        action="action_custom_wms_user_quick_create"
-        sequence="21"
-        groups="base.group_system"/>
-
     <menuitem id="menu_custom_wms_flow_step_config"
         name="业务推进流配置"
         parent="menu_custom_wms_master_data"
