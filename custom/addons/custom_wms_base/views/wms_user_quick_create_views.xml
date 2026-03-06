@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_custom_wms_user_quick_create_form" model="ir.ui.view">
+        <field name="name">custom.wms.user.quick.create.form</field>
+        <field name="model">custom.wms.user.quick.create</field>
+        <field name="arch" type="xml">
+            <form string="快速创建账号">
+                <group>
+                    <group>
+                        <field name="name"/>
+                        <field name="login"/>
+                        <field name="password" password="True"/>
+                        <field name="active"/>
+                    </group>
+                    <group string="角色分配">
+                        <field name="role_boss"/>
+                        <field name="role_warehouse"/>
+                        <field name="role_sales"/>
+                        <field name="role_service"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="action_create_user" type="object" class="btn-primary" string="创建账号"/>
+                    <button special="cancel" string="取消"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_custom_wms_user_quick_create" model="ir.actions.act_window">
+        <field name="name">快速创建账号</field>
+        <field name="res_model">custom.wms.user.quick.create</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

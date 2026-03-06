@@ -37,3 +37,4 @@ access_custom_wms_flow_step_system,custom.wms.flow.step system,model_custom_wms_
 access_product_pricelist_wms_sales_ops,product.pricelist wms sales ops,product.model_product_pricelist,custom_wms_base.group_wms_sales_ops,1,1,1,1
 access_product_pricelist_item_wms_sales_ops,product.pricelist.item wms sales ops,product.model_product_pricelist_item,custom_wms_base.group_wms_sales_ops,1,1,1,1
 access_custom_wms_flow_step_boss,custom.wms.flow.step boss,model_custom_wms_flow_step,custom_wms_base.group_wms_boss,1,1,1,0
+access_custom_wms_user_quick_create_admin,custom.wms.user.quick.create admin,model_custom_wms_user_quick_create,base.group_system,1,1,1,1

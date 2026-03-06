@@ -33,6 +33,7 @@ Includes role groups and product customs fields used by downstream modules.
         'views/operation_control_views.xml',
         'views/wms_flow_step_views.xml',
         'views/res_users_views.xml',
+        'views/wms_user_quick_create_views.xml',
         'views/wms_menus.xml',
         'views/wms_role_dashboard_views.xml',
         'views/wms_service_ticket_views.xml',

@@ -258,7 +258,7 @@
         <field name="name">账号管理</field>
         <field name="res_model">res.users</field>
         <field name="view_mode">list,form</field>
-        <field name="domain">[('share', '=', False)]</field>
+        <field name="domain">[('share', '=', False), ('login', '!=', '__system__')]</field>
         <field name="context">{'search_default_filter_active': 1}</field>
         <field name="help" type="html">
             <p>用于开通/停用员工账号，并分配老板、库管、销售、客服角色权限。</p>
@@ -270,6 +270,13 @@
         parent="menu_custom_wms_master_data"
         action="action_custom_wms_user_admin"
         sequence="20"
+        groups="base.group_system"/>
+
+    <menuitem id="menu_custom_wms_user_quick_create"
+        name="快速创建账号"
+        parent="menu_custom_wms_master_data"
+        action="action_custom_wms_user_quick_create"
+        sequence="21"
         groups="base.group_system"/>
 
     <menuitem id="menu_custom_wms_flow_step_config"

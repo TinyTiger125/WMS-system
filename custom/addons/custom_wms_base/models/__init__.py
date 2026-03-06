@@ -17,3 +17,4 @@ from . import wms_service_ticket
 from . import wms_role_dashboard
 from . import wms_onboarding
 from . import wms_language_defaults
+from . import wms_user_quick_create
