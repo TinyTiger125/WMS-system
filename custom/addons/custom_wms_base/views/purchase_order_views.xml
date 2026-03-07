@@ -29,10 +29,10 @@
         <field name="inherit_id" ref="purchase.purchase_order_form"/>
         <field name="arch" type="xml">
             <xpath expr="//button[@name='button_cancel']" position="attributes">
-                <attribute name="groups">base.group_system,custom_wms_base.group_wms_boss</attribute>
+                <attribute name="groups">base.group_system,custom_wms_base.group_wms_feature_purchase_order</attribute>
             </xpath>
             <xpath expr="//button[@name='button_draft']" position="attributes">
-                <attribute name="groups">base.group_system,custom_wms_base.group_wms_boss</attribute>
+                <attribute name="groups">base.group_system,custom_wms_base.group_wms_feature_purchase_order</attribute>
             </xpath>
         </field>
     </record>

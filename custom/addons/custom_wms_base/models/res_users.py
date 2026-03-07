@@ -15,6 +15,17 @@ class ResUsers(models.Model):
     wms_can_sales_delivery = fields.Boolean(string="可销售出库", compute="_compute_wms_capabilities")
     wms_can_reporting = fields.Boolean(string="可看经营报表", compute="_compute_wms_capabilities")
 
+    wms_feature_workspace = fields.Boolean(string="工作台与待办", compute="_compute_wms_features", inverse="_inverse_wms_feature_workspace")
+    wms_feature_master_data = fields.Boolean(string="商品与主数据", compute="_compute_wms_features", inverse="_inverse_wms_feature_master_data")
+    wms_feature_purchase_order = fields.Boolean(string="采购下单", compute="_compute_wms_features", inverse="_inverse_wms_feature_purchase_order")
+    wms_feature_purchase_receipt = fields.Boolean(string="采购入库", compute="_compute_wms_features", inverse="_inverse_wms_feature_purchase_receipt")
+    wms_feature_sales_order = fields.Boolean(string="销售下单", compute="_compute_wms_features", inverse="_inverse_wms_feature_sales_order")
+    wms_feature_sales_delivery = fields.Boolean(string="销售出库", compute="_compute_wms_features", inverse="_inverse_wms_feature_sales_delivery")
+    wms_feature_inventory = fields.Boolean(string="库存监控", compute="_compute_wms_features", inverse="_inverse_wms_feature_inventory")
+    wms_feature_exception_center = fields.Boolean(string="异常中心", compute="_compute_wms_features", inverse="_inverse_wms_feature_exception_center")
+    wms_feature_reporting = fields.Boolean(string="经营报表", compute="_compute_wms_features", inverse="_inverse_wms_feature_reporting")
+    wms_feature_service_ticket = fields.Boolean(string="客服工单", compute="_compute_wms_features", inverse="_inverse_wms_feature_service_ticket")
+
     def _is_in_group(self, xmlid):
         self.ensure_one()
         return self.has_group(xmlid)
@@ -54,12 +65,61 @@ class ResUsers(models.Model):
 
     def _compute_wms_capabilities(self):
         for user in self:
-            is_boss = user._is_in_group("custom_wms_base.group_wms_boss")
-            is_wh = user._is_in_group("custom_wms_base.group_wms_warehouse_ops")
-            is_sales = user._is_in_group("custom_wms_base.group_wms_sales_ops")
+            user.wms_can_purchase_order = user._is_in_group("custom_wms_base.group_wms_feature_purchase_order")
+            user.wms_can_purchase_receipt = user._is_in_group("custom_wms_base.group_wms_feature_purchase_receipt")
+            user.wms_can_sales_order = user._is_in_group("custom_wms_base.group_wms_feature_sales_order")
+            user.wms_can_sales_delivery = user._is_in_group("custom_wms_base.group_wms_feature_sales_delivery")
+            user.wms_can_reporting = user._is_in_group("custom_wms_base.group_wms_feature_reporting")
 
-            user.wms_can_purchase_order = is_boss
-            user.wms_can_purchase_receipt = is_boss or is_wh
-            user.wms_can_sales_order = is_boss or is_sales
-            user.wms_can_sales_delivery = is_boss or is_wh
-            user.wms_can_reporting = is_boss or is_wh
+    def _compute_wms_features(self):
+        for user in self:
+            user.wms_feature_workspace = user._is_in_group("custom_wms_base.group_wms_feature_workspace")
+            user.wms_feature_master_data = user._is_in_group("custom_wms_base.group_wms_feature_master_data")
+            user.wms_feature_purchase_order = user._is_in_group("custom_wms_base.group_wms_feature_purchase_order")
+            user.wms_feature_purchase_receipt = user._is_in_group("custom_wms_base.group_wms_feature_purchase_receipt")
+            user.wms_feature_sales_order = user._is_in_group("custom_wms_base.group_wms_feature_sales_order")
+            user.wms_feature_sales_delivery = user._is_in_group("custom_wms_base.group_wms_feature_sales_delivery")
+            user.wms_feature_inventory = user._is_in_group("custom_wms_base.group_wms_feature_inventory")
+            user.wms_feature_exception_center = user._is_in_group("custom_wms_base.group_wms_feature_exception_center")
+            user.wms_feature_reporting = user._is_in_group("custom_wms_base.group_wms_feature_reporting")
+            user.wms_feature_service_ticket = user._is_in_group("custom_wms_base.group_wms_feature_service_ticket")
+
+    def _inverse_wms_feature_workspace(self):
+        for user in self:
+            user._set_group_membership("custom_wms_base.group_wms_feature_workspace", user.wms_feature_workspace)
+
+    def _inverse_wms_feature_master_data(self):
+        for user in self:
+            user._set_group_membership("custom_wms_base.group_wms_feature_master_data", user.wms_feature_master_data)
+
+    def _inverse_wms_feature_purchase_order(self):
+        for user in self:
+            user._set_group_membership("custom_wms_base.group_wms_feature_purchase_order", user.wms_feature_purchase_order)
+
+    def _inverse_wms_feature_purchase_receipt(self):
+        for user in self:
+            user._set_group_membership("custom_wms_base.group_wms_feature_purchase_receipt", user.wms_feature_purchase_receipt)
+
+    def _inverse_wms_feature_sales_order(self):
+        for user in self:
+            user._set_group_membership("custom_wms_base.group_wms_feature_sales_order", user.wms_feature_sales_order)
+
+    def _inverse_wms_feature_sales_delivery(self):
+        for user in self:
+            user._set_group_membership("custom_wms_base.group_wms_feature_sales_delivery", user.wms_feature_sales_delivery)
+
+    def _inverse_wms_feature_inventory(self):
+        for user in self:
+            user._set_group_membership("custom_wms_base.group_wms_feature_inventory", user.wms_feature_inventory)
+
+    def _inverse_wms_feature_exception_center(self):
+        for user in self:
+            user._set_group_membership("custom_wms_base.group_wms_feature_exception_center", user.wms_feature_exception_center)
+
+    def _inverse_wms_feature_reporting(self):
+        for user in self:
+            user._set_group_membership("custom_wms_base.group_wms_feature_reporting", user.wms_feature_reporting)
+
+    def _inverse_wms_feature_service_ticket(self):
+        for user in self:
+            user._set_group_membership("custom_wms_base.group_wms_feature_service_ticket", user.wms_feature_service_ticket)

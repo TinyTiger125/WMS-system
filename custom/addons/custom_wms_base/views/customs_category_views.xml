@@ -57,12 +57,12 @@
         parent="custom_wms_base.menu_custom_wms_master_data"
         action="action_custom_customs_category_jp"
         sequence="20"
-        groups="base.group_system,custom_wms_base.group_wms_boss"/>
+        groups="base.group_system,custom_wms_base.group_wms_feature_master_data"/>
 
     <menuitem id="menu_custom_wms_customs_category_cn"
         name="中国海关分类维护"
         parent="custom_wms_base.menu_custom_wms_master_data"
         action="action_custom_customs_category_cn"
         sequence="30"
-        groups="base.group_system,custom_wms_base.group_wms_boss"/>
+        groups="base.group_system,custom_wms_base.group_wms_feature_master_data"/>
 </odoo>

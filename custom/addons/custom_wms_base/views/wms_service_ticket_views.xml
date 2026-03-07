@@ -89,14 +89,14 @@
         name="客服工单"
         parent="custom_wms_base.menu_custom_wms_root"
         sequence="55"
-        groups="base.group_system,custom_wms_base.group_wms_boss,custom_wms_base.group_wms_service_ops"/>
+        groups="base.group_system,custom_wms_base.group_wms_feature_service_ticket"/>
 
     <menuitem id="menu_custom_wms_service_dashboard"
         name="客服仪表盘"
         parent="menu_custom_wms_service_root"
         action="custom_wms_base.action_custom_wms_open_service_dashboard"
         sequence="10"
-        groups="base.group_system,custom_wms_base.group_wms_boss,custom_wms_base.group_wms_service_ops"/>
+        groups="base.group_system,custom_wms_base.group_wms_feature_service_ticket"/>
 
     <menuitem id="menu_custom_wms_service_ticket_list_menu"
         name="工单列表"

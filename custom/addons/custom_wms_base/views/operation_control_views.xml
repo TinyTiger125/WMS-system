@@ -62,10 +62,10 @@
                     invisible="state not in ('sale', 'done')"/>
             </xpath>
             <xpath expr="//button[@name='action_cancel']" position="attributes">
-                <attribute name="groups">base.group_system,custom_wms_base.group_wms_boss</attribute>
+                <attribute name="groups">base.group_system,custom_wms_base.group_wms_feature_sales_order</attribute>
             </xpath>
             <xpath expr="//button[@name='action_draft']" position="attributes">
-                <attribute name="groups">base.group_system,custom_wms_base.group_wms_boss</attribute>
+                <attribute name="groups">base.group_system,custom_wms_base.group_wms_feature_sales_order</attribute>
             </xpath>
             <xpath expr="//label[@for='pricelist_id']" position="attributes">
                 <attribute name="string">销售价格表</attribute>
@@ -115,7 +115,7 @@
                     invisible="picking_type_code != 'incoming' or state != 'done'"/>
             </xpath>
             <xpath expr="//button[@name='action_cancel']" position="attributes">
-                <attribute name="groups">base.group_system,custom_wms_base.group_wms_boss</attribute>
+                <attribute name="groups">base.group_system,custom_wms_base.group_wms_feature_purchase_receipt,custom_wms_base.group_wms_feature_sales_delivery</attribute>
             </xpath>
         </field>
     </record>

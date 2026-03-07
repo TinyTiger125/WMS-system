@@ -252,13 +252,13 @@
         name="经营报表"
         parent="custom_wms_base.menu_custom_wms_root"
         sequence="70"
-        groups="base.group_system,custom_wms_base.group_wms_boss,custom_wms_base.group_wms_sales_ops"/>
+        groups="base.group_system,custom_wms_base.group_wms_feature_reporting"/>
 
     <menuitem id="menu_custom_wms_exception_center_root"
         name="异常中心"
         parent="custom_wms_base.menu_custom_wms_root"
         sequence="45"
-        groups="base.group_system,custom_wms_base.group_wms_boss,custom_wms_base.group_wms_warehouse_ops"/>
+        groups="base.group_system,custom_wms_base.group_wms_feature_exception_center"/>
 
     <menuitem id="menu_custom_wms_exception_pending_ops"
         name="待处理出入库"
@@ -295,7 +295,7 @@
         parent="menu_custom_wms_reporting_root"
         action="action_custom_wms_stock_value_rank"
         sequence="25"
-        groups="base.group_system,custom_wms_base.group_wms_boss"/>
+        groups="base.group_system,custom_wms_base.group_wms_feature_reporting"/>
 
     <menuitem id="menu_custom_wms_price_history"
         name="价格变更记录"
@@ -308,9 +308,9 @@
         parent="menu_custom_wms_reporting_root"
         action="action_custom_wms_audit_log"
         sequence="40"
-        groups="base.group_system,custom_wms_base.group_wms_boss"/>
+        groups="base.group_system,custom_wms_base.group_wms_feature_reporting"/>
 
     <record id="menu_custom_wms_reporting_root" model="ir.ui.menu">
-        <field name="group_ids" eval="[(6, 0, [ref('base.group_system'), ref('custom_wms_base.group_wms_boss'), ref('custom_wms_base.group_wms_sales_ops')])]"/>
+        <field name="group_ids" eval="[(6, 0, [ref('base.group_system'), ref('custom_wms_base.group_wms_feature_reporting')])]"/>
     </record>
 </odoo>

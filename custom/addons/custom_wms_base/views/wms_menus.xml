@@ -3,7 +3,7 @@
     <menuitem id="menu_custom_wms_root"
         name="跨境进销存"
         sequence="1"
-        groups="base.group_system,custom_wms_base.group_wms_boss,custom_wms_base.group_wms_warehouse_ops,custom_wms_base.group_wms_sales_ops,custom_wms_base.group_wms_service_ops"/>
+        groups="base.group_system,custom_wms_base.group_wms_feature_workspace,custom_wms_base.group_wms_feature_master_data,custom_wms_base.group_wms_feature_purchase_order,custom_wms_base.group_wms_feature_purchase_receipt,custom_wms_base.group_wms_feature_sales_order,custom_wms_base.group_wms_feature_sales_delivery,custom_wms_base.group_wms_feature_inventory,custom_wms_base.group_wms_feature_exception_center,custom_wms_base.group_wms_feature_reporting,custom_wms_base.group_wms_feature_service_ticket"/>
 
     <record id="action_custom_wms_product_master" model="ir.actions.act_window">
         <field name="name">商品档案</field>
@@ -128,37 +128,37 @@
         name="进销存流程"
         parent="menu_custom_wms_root"
         sequence="1"
-        groups="base.group_system,custom_wms_base.group_wms_boss,custom_wms_base.group_wms_warehouse_ops,custom_wms_base.group_wms_sales_ops"/>
+        groups="base.group_system,custom_wms_base.group_wms_feature_master_data,custom_wms_base.group_wms_feature_purchase_order,custom_wms_base.group_wms_feature_purchase_receipt,custom_wms_base.group_wms_feature_sales_order,custom_wms_base.group_wms_feature_sales_delivery,custom_wms_base.group_wms_feature_inventory"/>
 
     <menuitem id="menu_custom_wms_workspace_root"
         name="今日待办"
         parent="menu_custom_wms_root"
         sequence="5"
-        groups="base.group_system,custom_wms_base.group_wms_boss,custom_wms_base.group_wms_warehouse_ops,custom_wms_base.group_wms_sales_ops,custom_wms_base.group_wms_service_ops"/>
+        groups="base.group_system,custom_wms_base.group_wms_feature_workspace"/>
 
     <menuitem id="menu_custom_wms_master_ops_root"
         name="商品与主数据"
         parent="menu_custom_wms_root"
         sequence="10"
-        groups="base.group_system,custom_wms_base.group_wms_boss,custom_wms_base.group_wms_sales_ops"/>
+        groups="base.group_system,custom_wms_base.group_wms_feature_master_data"/>
 
     <menuitem id="menu_custom_wms_procurement_root"
         name="采购执行"
         parent="menu_custom_wms_root"
         sequence="20"
-        groups="base.group_system,custom_wms_base.group_wms_boss,custom_wms_base.group_wms_warehouse_ops"/>
+        groups="base.group_system,custom_wms_base.group_wms_feature_purchase_order,custom_wms_base.group_wms_feature_purchase_receipt"/>
 
     <menuitem id="menu_custom_wms_sales_ops_root"
         name="销售执行"
         parent="menu_custom_wms_root"
         sequence="30"
-        groups="base.group_system,custom_wms_base.group_wms_boss,custom_wms_base.group_wms_warehouse_ops,custom_wms_base.group_wms_sales_ops"/>
+        groups="base.group_system,custom_wms_base.group_wms_feature_sales_order,custom_wms_base.group_wms_feature_sales_delivery"/>
 
     <menuitem id="menu_custom_wms_inventory_ops_root"
         name="库存监控"
         parent="menu_custom_wms_root"
         sequence="40"
-        groups="base.group_system,custom_wms_base.group_wms_boss,custom_wms_base.group_wms_warehouse_ops"/>
+        groups="base.group_system,custom_wms_base.group_wms_feature_inventory"/>
 
     <menuitem id="menu_custom_wms_product_create"
         name="1. 商品登记（新增）"
@@ -183,14 +183,14 @@
         parent="menu_custom_wms_master_ops_root"
         action="action_custom_wms_pricelist"
         sequence="26"
-        groups="base.group_system,custom_wms_base.group_wms_boss,custom_wms_base.group_wms_sales_ops"/>
+        groups="base.group_system,custom_wms_base.group_wms_feature_sales_order"/>
 
     <menuitem id="menu_custom_wms_purchase"
         name="3. 采购下单"
         parent="menu_custom_wms_procurement_root"
         action="action_custom_wms_purchase_flow"
         sequence="30"
-        groups="base.group_system,custom_wms_base.group_wms_boss"/>
+        groups="base.group_system,custom_wms_base.group_wms_feature_purchase_order"/>
 
     <menuitem id="menu_custom_wms_receipts"
         name="4. 采购入库"
@@ -203,7 +203,7 @@
         parent="menu_custom_wms_sales_ops_root"
         action="action_custom_wms_sales_flow"
         sequence="50"
-        groups="base.group_system,custom_wms_base.group_wms_boss,custom_wms_base.group_wms_sales_ops"/>
+        groups="base.group_system,custom_wms_base.group_wms_feature_sales_order"/>
 
     <menuitem id="menu_custom_wms_deliveries"
         name="6. 销售出库"
@@ -216,7 +216,7 @@
         parent="menu_custom_wms_workspace_root"
         action="action_custom_wms_todo_purchase_confirm"
         sequence="11"
-        groups="base.group_system,custom_wms_base.group_wms_boss"/>
+        groups="base.group_system,custom_wms_base.group_wms_feature_purchase_order"/>
 
     <menuitem id="menu_custom_wms_todo_receipt"
         name="待采购入库"
@@ -246,7 +246,7 @@
         name="基础资料"
         parent="menu_custom_wms_root"
         sequence="60"
-        groups="base.group_system,custom_wms_base.group_wms_boss"/>
+        groups="base.group_system,custom_wms_base.group_wms_feature_master_data"/>
 
     <menuitem id="menu_custom_wms_products_archive"
         name="商品档案"
@@ -289,7 +289,7 @@
     </record>
     <record id="spreadsheet_dashboard.spreadsheet_dashboard_menu_root" model="ir.ui.menu">
         <field name="active">True</field>
-        <field name="group_ids" eval="[(6, 0, [ref('base.group_system'), ref('custom_wms_base.group_wms_boss')])]"/>
+        <field name="group_ids" eval="[(6, 0, [ref('base.group_system'), ref('custom_wms_base.group_wms_feature_reporting')])]"/>
     </record>
     <record id="account.menu_finance" model="ir.ui.menu">
         <field name="active">False</field>
@@ -316,6 +316,6 @@
         <field name="active">False</field>
     </record>
     <record id="menu_custom_wms_master_data" model="ir.ui.menu">
-        <field name="group_ids" eval="[(6, 0, [ref('base.group_system'), ref('custom_wms_base.group_wms_boss')])]"/>
+        <field name="group_ids" eval="[(6, 0, [ref('base.group_system'), ref('custom_wms_base.group_wms_feature_master_data')])]"/>
     </record>
 </odoo>
