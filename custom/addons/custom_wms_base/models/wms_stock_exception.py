@@ -4,7 +4,7 @@ from odoo import api, fields, models
 class CustomWmsStockException(models.Model):
     _name = "custom.wms.stock.exception"
     _description = "WMS Stock Exception"
-    _order = "status desc, shortage_rate desc, id desc"
+    _order = "priority_rank asc, shortage_rate desc, id desc"
 
     product_tmpl_id = fields.Many2one("product.template", string="商品", required=True, ondelete="cascade", index=True)
     product_id = fields.Many2one("product.product", string="规格", required=True, ondelete="cascade")
@@ -19,12 +19,37 @@ class CustomWmsStockException(models.Model):
     min_qty = fields.Float(string="最低库存阈值")
     max_qty = fields.Float(string="最高库存阈值")
     shortage_rate = fields.Float(string="偏离比例(%)")
+    priority = fields.Selection(
+        [("p1", "P1-紧急"), ("p2", "P2-重要"), ("p3", "P3-常规")],
+        string="优先级",
+        compute="_compute_priority",
+        store=True,
+        index=True,
+    )
+    priority_rank = fields.Integer(string="优先级排序", compute="_compute_priority", store=True, index=True)
     snapshot_time = fields.Datetime(string="快照时间", default=fields.Datetime.now, required=True)
     company_id = fields.Many2one("res.company", string="公司", default=lambda self: self.env.company, required=True)
 
     _sql_constraints = [
         ("uniq_company_product_status", "unique(company_id, product_tmpl_id, status)", "同一公司下同一商品同一预警类型只能保留一条记录。"),
     ]
+
+    @api.depends("status", "shortage_rate", "qty_available")
+    def _compute_priority(self):
+        for rec in self:
+            priority = "p3"
+            if rec.status == "cost_missing" and rec.qty_available > 0:
+                priority = "p1"
+            elif rec.status == "low":
+                if rec.shortage_rate >= 30:
+                    priority = "p1"
+                elif rec.shortage_rate >= 10:
+                    priority = "p2"
+            elif rec.status == "high":
+                if rec.shortage_rate >= 100:
+                    priority = "p2"
+            rec.priority = priority
+            rec.priority_rank = {"p1": 1, "p2": 2, "p3": 3}.get(priority, 9)
 
     @api.model
     def refresh_exceptions(self):

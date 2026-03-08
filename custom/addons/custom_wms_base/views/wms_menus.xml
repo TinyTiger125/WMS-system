@@ -3,7 +3,7 @@
     <menuitem id="menu_custom_wms_root"
         name="跨境进销存"
         sequence="1"
-        groups="base.group_system,custom_wms_base.group_wms_feature_workspace,custom_wms_base.group_wms_feature_master_data,custom_wms_base.group_wms_feature_purchase_order,custom_wms_base.group_wms_feature_purchase_receipt,custom_wms_base.group_wms_feature_sales_order,custom_wms_base.group_wms_feature_sales_delivery,custom_wms_base.group_wms_feature_inventory,custom_wms_base.group_wms_feature_exception_center,custom_wms_base.group_wms_feature_reporting,custom_wms_base.group_wms_feature_service_ticket"/>
+        groups="base.group_system,custom_wms_base.group_wms_feature_workspace,custom_wms_base.group_wms_feature_master_data,custom_wms_base.group_wms_feature_purchase_order,custom_wms_base.group_wms_feature_purchase_receipt,custom_wms_base.group_wms_feature_sales_order,custom_wms_base.group_wms_feature_sales_delivery,custom_wms_base.group_wms_feature_inventory,custom_wms_base.group_wms_feature_exception_center,custom_wms_base.group_wms_feature_reporting,custom_wms_base.group_wms_feature_service_ticket,custom_wms_base.group_wms_feature_customer_selfservice"/>
 
     <record id="action_custom_wms_product_master" model="ir.actions.act_window">
         <field name="name">商品档案</field>
@@ -44,7 +44,7 @@
         <field name="res_model">stock.picking</field>
         <field name="view_mode">list,kanban,form,calendar,activity</field>
         <field name="domain">[('picking_type_code', '=', 'incoming')]</field>
-        <field name="context">{'create': False}</field>
+        <field name="context">{'create': False, 'default_picking_type_code': 'incoming'}</field>
         <field name="help" type="html">
             <p>暂无入库单。采购单确认后会自动生成入库单。</p>
         </field>
@@ -75,7 +75,7 @@
         <field name="res_model">stock.picking</field>
         <field name="view_mode">list,kanban,form,calendar,activity</field>
         <field name="domain">[('picking_type_code', '=', 'outgoing')]</field>
-        <field name="context">{'create': False}</field>
+        <field name="context">{'create': False, 'default_picking_type_code': 'outgoing'}</field>
         <field name="help" type="html">
             <p>暂无出库单。销售订单确认后会自动生成出库单。</p>
         </field>
@@ -97,7 +97,7 @@
         <field name="res_model">stock.picking</field>
         <field name="view_mode">list,form,kanban</field>
         <field name="domain">[('picking_type_code', '=', 'incoming'), ('state', 'not in', ('done', 'cancel'))]</field>
-        <field name="context">{'create': False}</field>
+        <field name="context">{'create': False, 'default_picking_type_code': 'incoming'}</field>
         <field name="help" type="html">
             <p>这里是库管待处理的采购入库任务。</p>
         </field>
@@ -108,7 +108,7 @@
         <field name="res_model">stock.picking</field>
         <field name="view_mode">list,form,kanban</field>
         <field name="domain">[('picking_type_code', '=', 'outgoing'), ('state', 'not in', ('done', 'cancel'))]</field>
-        <field name="context">{'create': False}</field>
+        <field name="context">{'create': False, 'default_picking_type_code': 'outgoing'}</field>
         <field name="help" type="html">
             <p>这里是库管待处理的销售出库任务。</p>
         </field>
@@ -248,21 +248,61 @@
         sequence="60"
         groups="base.group_system,custom_wms_base.group_wms_feature_master_data"/>
 
+    <menuitem id="menu_custom_wms_customer_center"
+        name="客户自助"
+        parent="menu_custom_wms_root"
+        sequence="55"
+        groups="base.group_system,custom_wms_base.group_wms_feature_customer_selfservice"/>
+
     <menuitem id="menu_custom_wms_products_archive"
         name="商品档案"
         parent="menu_custom_wms_master_data"
         action="action_custom_wms_product_master"
         sequence="10"/>
 
+    <menuitem id="menu_custom_wms_customer_contract_admin"
+        name="框架合同管理"
+        parent="menu_custom_wms_master_data"
+        action="custom_wms_base.action_custom_wms_customer_contract"
+        sequence="25"
+        groups="base.group_system,custom_wms_base.group_wms_boss"/>
+
+    <menuitem id="menu_custom_wms_customer_contract_stock"
+        name="合同库存"
+        parent="menu_custom_wms_customer_center"
+        action="custom_wms_base.action_custom_wms_customer_contract_line"
+        sequence="10"
+        groups="base.group_system,custom_wms_base.group_wms_feature_customer_selfservice"/>
+
+    <menuitem id="menu_custom_wms_customer_orders"
+        name="我的订单"
+        parent="menu_custom_wms_customer_center"
+        action="custom_wms_base.action_custom_wms_customer_my_orders"
+        sequence="20"
+        groups="base.group_system,custom_wms_base.group_wms_feature_customer_selfservice"/>
+
     <record id="action_custom_wms_user_admin" model="ir.actions.act_window">
         <field name="name">账号管理</field>
         <field name="res_model">res.users</field>
+        <field name="view_id" ref="base.view_users_tree"/>
         <field name="view_mode">list,form</field>
         <field name="domain">[('share', '=', False), ('login', '!=', '__system__')]</field>
-        <field name="context">{'search_default_filter_active': 1}</field>
+        <field name="context">{'search_default_filter_active': 1, 'is_action_res_users': True}</field>
         <field name="help" type="html">
             <p>用于开通/停用员工账号，并分配老板、库管、销售、客服角色权限。</p>
         </field>
+    </record>
+    <record id="action_custom_wms_user_admin_view1" model="ir.actions.act_window.view">
+        <field eval="10" name="sequence"/>
+        <field name="view_mode">list</field>
+        <field name="view_id" ref="base.view_users_tree"/>
+        <field name="act_window_id" ref="action_custom_wms_user_admin"/>
+    </record>
+    <record id="action_custom_wms_user_admin_view2" model="ir.actions.act_window.view">
+        <field eval="20" name="sequence"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="custom_wms_base.view_users_form_wms_role_panel"/>
+        <field name="act_window_id" ref="action_custom_wms_user_admin"/>
     </record>
 
     <menuitem id="menu_custom_wms_user_admin"

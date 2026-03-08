@@ -7,6 +7,14 @@
             <form string="角色仪表盘" create="0" edit="0" delete="0">
                 <header>
                     <button name="refresh_metrics" type="object" string="刷新指标" class="btn-primary"/>
+                    <button name="action_start_purchase_order" type="object" string="新建采购单" class="btn-secondary" invisible="role != 'boss'"/>
+                    <button name="action_start_sales_order" type="object" string="新建销售单" class="btn-secondary" invisible="role != 'boss'"/>
+                    <button name="action_open_sales_pricelist" type="object" string="维护销售价格表" class="btn-secondary" invisible="role != 'boss'"/>
+                    <button name="action_open_daily_kpi" type="object" string="查看经营日报" class="btn-secondary" invisible="role != 'boss'"/>
+                    <button name="action_open_exception_center" type="object" string="处理异常中心" class="btn-secondary" invisible="role not in ('boss', 'warehouse')"/>
+                    <button name="action_open_incoming_transit" type="object" string="处理待采购入库" class="btn-secondary" invisible="role != 'warehouse'"/>
+                    <button name="action_open_outgoing_transit" type="object" string="处理待销售出库" class="btn-secondary" invisible="role != 'warehouse'"/>
+                    <button name="action_open_stock_overview" type="object" string="查看库存总览" class="btn-secondary" invisible="role != 'warehouse'"/>
                 </header>
                 <sheet>
                     <div class="oe_title">
@@ -50,6 +58,11 @@
                             <field name="boss_pending_purchase_count"/>
                             <field name="boss_pending_delivery_count"/>
                         </group>
+                        <group col="1" colspan="2">
+                            <div class="text-muted">
+                                使用建议：先处理“待采购确认/待销售出库”，再处理“低库存/无成本价”。
+                            </div>
+                        </group>
                     </group>
                     <group string="库管指标" invisible="role != 'warehouse'">
                         <group>
@@ -61,6 +74,11 @@
                             <field name="wh_partial_contract_count"/>
                             <field name="wh_exception_count"/>
                         </group>
+                        <group col="1" colspan="2">
+                            <div class="text-muted">
+                                使用建议：按“在途入库 → 在途出库 → 库存异常”顺序清任务，避免积压。
+                            </div>
+                        </group>
                     </group>
                     <group string="客服指标" invisible="role != 'service'">
                         <group>
@@ -70,6 +88,11 @@
                         <group>
                             <field name="service_overdue_count"/>
                             <field name="service_today_new_count"/>
+                        </group>
+                        <group col="1" colspan="2">
+                            <div class="text-muted">
+                                使用建议：优先处理逾期工单，再处理待客户回复工单。
+                            </div>
                         </group>
                     </group>
                 </sheet>

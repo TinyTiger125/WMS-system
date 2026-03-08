@@ -18,3 +18,5 @@ from . import wms_role_dashboard
 from . import wms_onboarding
 from . import wms_language_defaults
 from . import wms_user_quick_create
+from . import wms_customer_contract
+from . import wms_customer_order_wizard

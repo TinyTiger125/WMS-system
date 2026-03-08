@@ -42,5 +42,12 @@
                 (4, ref('custom_wms_base.group_wms_feature_service_ticket'))
             ]}"/>
         </function>
+        <function model="res.groups" name="write">
+            <value eval="[ref('custom_wms_base.group_wms_customer')]"/>
+            <value eval="{'implied_ids': [
+                (4, ref('sales_team.group_sale_salesman')),
+                (4, ref('custom_wms_base.group_wms_feature_customer_selfservice'))
+            ]}"/>
+        </function>
     </data>
 </odoo>

@@ -76,6 +76,13 @@
             <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
         </record>
 
+        <record id="group_wms_feature_customer_selfservice" model="res.groups">
+            <field name="name">功能/客户自助</field>
+            <field name="sequence">11</field>
+            <field name="privilege_id" ref="custom_wms_base.res_groups_privilege_custom_wms"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+
         <record id="group_wms_sales_ops" model="res.groups">
             <field name="name">Sales Ops</field>
             <field name="sequence">20</field>
@@ -112,6 +119,17 @@
                 (4, ref('base.group_user')),
                 (4, ref('custom_wms_base.group_wms_feature_workspace')),
                 (4, ref('custom_wms_base.group_wms_feature_service_ticket'))
+            ]"/>
+        </record>
+
+        <record id="group_wms_customer" model="res.groups">
+            <field name="name">Customer</field>
+            <field name="sequence">38</field>
+            <field name="privilege_id" ref="custom_wms_base.res_groups_privilege_custom_wms"/>
+            <field name="implied_ids" eval="[
+                (4, ref('base.group_user')),
+                (4, ref('sales_team.group_sale_salesman')),
+                (4, ref('custom_wms_base.group_wms_feature_customer_selfservice'))
             ]"/>
         </record>
 

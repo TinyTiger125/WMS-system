@@ -1,4 +1,5 @@
 from odoo import api, fields, models
+from odoo.tools.safe_eval import safe_eval
 
 
 class CustomWmsRoleDashboard(models.Model):
@@ -186,6 +187,7 @@ class CustomWmsRoleDashboard(models.Model):
                 ("picking_type_code", "=", "outgoing"),
                 ("state", "not in", ("done", "cancel")),
             ],
+            "context": {"create": False},
         }
 
     def action_open_low_stock(self):
@@ -220,6 +222,7 @@ class CustomWmsRoleDashboard(models.Model):
                 ("picking_type_code", "=", "incoming"),
                 ("state", "not in", ("done", "cancel")),
             ],
+            "context": {"create": False},
         }
 
     def action_open_outgoing_transit(self):
@@ -234,6 +237,7 @@ class CustomWmsRoleDashboard(models.Model):
                 ("picking_type_code", "=", "outgoing"),
                 ("state", "not in", ("done", "cancel")),
             ],
+            "context": {"create": False},
         }
 
     def action_open_service_tickets(self):
@@ -249,3 +253,57 @@ class CustomWmsRoleDashboard(models.Model):
                 ("state", "in", ("new", "in_progress", "pending")),
             ],
         }
+
+    @api.model
+    def _read_action(self, xmlid):
+        return self.env.ref(xmlid).sudo().read()[0]
+
+    @api.model
+    def _merge_action_context(self, action, extra_context):
+        base_context = action.get("context") or {}
+        if isinstance(base_context, str):
+            base_context = safe_eval(base_context)
+        action["context"] = {**base_context, **(extra_context or {})}
+        return action
+
+    def action_start_purchase_order(self):
+        self.ensure_one()
+        action = self._read_action("custom_wms_base.action_custom_wms_purchase_flow")
+        action["name"] = "新建采购单"
+        action["view_mode"] = "form,list,kanban"
+        action["views"] = [(False, "form"), (False, "list"), (False, "kanban")]
+        return self._merge_action_context(
+            action,
+            {
+                "default_date_order": fields.Datetime.to_string(fields.Datetime.now()),
+            },
+        )
+
+    def action_start_sales_order(self):
+        self.ensure_one()
+        action = self._read_action("custom_wms_base.action_custom_wms_sales_flow")
+        action["name"] = "新建销售单"
+        action["view_mode"] = "form,list,kanban"
+        action["views"] = [(False, "form"), (False, "list"), (False, "kanban")]
+        return self._merge_action_context(
+            action,
+            {
+                "default_date_order": fields.Datetime.to_string(fields.Datetime.now()),
+            },
+        )
+
+    def action_open_sales_pricelist(self):
+        self.ensure_one()
+        return self._read_action("custom_wms_base.action_custom_wms_pricelist")
+
+    def action_open_stock_overview(self):
+        self.ensure_one()
+        return self._read_action("stock.action_product_stock_view")
+
+    @api.model
+    def action_open_daily_kpi(self):
+        return self._read_action("custom_wms_base.action_custom_wms_daily_kpi")
+
+    @api.model
+    def action_open_exception_center(self):
+        return self._read_action("custom_wms_base.action_custom_wms_stock_exception")

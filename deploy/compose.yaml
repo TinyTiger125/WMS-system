@@ -39,6 +39,7 @@ services:
     volumes:
       - wms_odoo_data:/var/lib/odoo
       - wms_odoo_log:/var/log/odoo
+      - ../custom/addons:/mnt/extra-addons:ro
     healthcheck:
       test: ["CMD", "/opt/deploy/healthcheck.sh"]
       interval: 15s
@@ -59,8 +60,11 @@ services:
       DB_PASSWORD: ${POSTGRES_PASSWORD:-odoo}
       ODOO_DB_NAME: ${POSTGRES_DB:-odoo19_prod}
       ODOO_ADMIN_PASSWD: ${ODOO_ADMIN_PASSWD:-change_me}
-      ODOO_INIT_MODULES: ${ODOO_INIT_MODULES:-base,sale_management,purchase,stock,custom_wms_base,custom_customs_export}
-      ODOO_UPGRADE_MODULES: ${ODOO_UPGRADE_MODULES:-custom_wms_base,custom_customs_export}
+      ODOO_INIT_MODULES: ${ODOO_INIT_MODULES:-base,sale_management,purchase,stock,custom_wms_base,custom_customs_export,custom_cn_sync}
+      ODOO_UPGRADE_MODULES: ${ODOO_UPGRADE_MODULES:-custom_wms_base,custom_customs_export,custom_cn_sync}
+      ODOO_FORCE_LANG: ${ODOO_FORCE_LANG:-zh_CN}
+    volumes:
+      - ../custom/addons:/mnt/extra-addons:ro
     entrypoint: ["/opt/deploy/init-db.sh"]
 
 volumes:

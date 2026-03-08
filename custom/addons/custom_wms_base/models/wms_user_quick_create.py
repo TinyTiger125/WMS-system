@@ -15,11 +15,12 @@ class WmsUserQuickCreate(models.TransientModel):
     role_warehouse = fields.Boolean(string="库管")
     role_sales = fields.Boolean(string="销售")
     role_service = fields.Boolean(string="客服")
+    role_customer = fields.Boolean(string="客户")
 
-    @api.constrains("role_boss", "role_warehouse", "role_sales", "role_service")
+    @api.constrains("role_boss", "role_warehouse", "role_sales", "role_service", "role_customer")
     def _check_has_any_role(self):
         for wizard in self:
-            if not any([wizard.role_boss, wizard.role_warehouse, wizard.role_sales, wizard.role_service]):
+            if not any([wizard.role_boss, wizard.role_warehouse, wizard.role_sales, wizard.role_service, wizard.role_customer]):
                 raise ValidationError("请至少勾选一个角色。")
 
     def _collect_group_ids(self):
@@ -33,6 +34,8 @@ class WmsUserQuickCreate(models.TransientModel):
             xmlids.append("custom_wms_base.group_wms_sales_ops")
         if self.role_service:
             xmlids.append("custom_wms_base.group_wms_service_ops")
+        if self.role_customer:
+            xmlids.append("custom_wms_base.group_wms_customer")
         return [self.env.ref(xmlid).id for xmlid in xmlids]
 
     def action_create_user(self):

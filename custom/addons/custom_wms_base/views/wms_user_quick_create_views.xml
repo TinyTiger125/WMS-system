@@ -17,6 +17,7 @@
                         <field name="role_warehouse"/>
                         <field name="role_sales"/>
                         <field name="role_service"/>
+                        <field name="role_customer"/>
                     </group>
                 </group>
                 <footer>

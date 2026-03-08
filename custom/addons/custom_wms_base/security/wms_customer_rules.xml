@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <record id="rule_wms_customer_contract_self" model="ir.rule">
+            <field name="name">WMS Customer Contract Self</field>
+            <field name="model_id" ref="model_custom_wms_customer_contract"/>
+            <field name="groups" eval="[(4, ref('custom_wms_base.group_wms_customer'))]"/>
+            <field name="domain_force">['|', ('user_ids', 'in', [user.id]), ('partner_id', 'child_of', [user.partner_id.commercial_partner_id.id])]</field>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="0"/>
+            <field name="perm_create" eval="0"/>
+            <field name="perm_unlink" eval="0"/>
+        </record>
+
+        <record id="rule_wms_customer_contract_line_self" model="ir.rule">
+            <field name="name">WMS Customer Contract Line Self</field>
+            <field name="model_id" ref="model_custom_wms_customer_contract_line"/>
+            <field name="groups" eval="[(4, ref('custom_wms_base.group_wms_customer'))]"/>
+            <field name="domain_force">['|', ('contract_id.user_ids', 'in', [user.id]), ('partner_id', 'child_of', [user.partner_id.commercial_partner_id.id])]</field>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="0"/>
+            <field name="perm_create" eval="0"/>
+            <field name="perm_unlink" eval="0"/>
+        </record>
+
+        <record id="rule_wms_customer_sale_order_self" model="ir.rule">
+            <field name="name">WMS Customer Sale Order Self</field>
+            <field name="model_id" ref="sale.model_sale_order"/>
+            <field name="groups" eval="[(4, ref('custom_wms_base.group_wms_customer'))]"/>
+            <field name="domain_force">['|', ('wms_customer_contract_id.user_ids', 'in', [user.id]), ('partner_id', 'child_of', [user.partner_id.commercial_partner_id.id])]</field>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="0"/>
+        </record>
+
+        <record id="rule_wms_customer_sale_order_line_self" model="ir.rule">
+            <field name="name">WMS Customer Sale Order Line Self</field>
+            <field name="model_id" ref="sale.model_sale_order_line"/>
+            <field name="groups" eval="[(4, ref('custom_wms_base.group_wms_customer'))]"/>
+            <field name="domain_force">['|', ('order_id.wms_customer_contract_id.user_ids', 'in', [user.id]), ('order_partner_id', 'child_of', [user.partner_id.commercial_partner_id.id])]</field>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="0"/>
+        </record>
+    </data>
+</odoo>

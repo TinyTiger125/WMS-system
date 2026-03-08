@@ -12,7 +12,7 @@ class CustomProductImportWizard(models.TransientModel):
     _name = "custom.product.import.wizard"
     _description = "Product Import Wizard"
 
-    upload_file = fields.Binary(string="导入文件", required=True)
+    upload_file = fields.Binary(string="导入文件")
     upload_filename = fields.Char(string="文件名")
     result_note = fields.Text(string="导入结果", readonly=True)
     template_file = fields.Binary(string="模板文件", readonly=True)

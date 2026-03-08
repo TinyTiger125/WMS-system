@@ -5,14 +5,18 @@
         <field name="model">sale.order</field>
         <field name="arch" type="xml">
             <list string="销售订单" decoration-muted="state == 'cancel'">
+                <header>
+                    <button name="action_bulk_confirm_orders" type="object" string="批量确认" class="btn-secondary"/>
+                </header>
                 <field name="currency_id" column_invisible="True"/>
-                <field name="name" string="数量" decoration-bf="1"/>
+                <field name="name" string="单号" decoration-bf="1"/>
                 <field name="date_order" string="订单日期"/>
                 <field name="partner_id" string="客户"/>
                 <field name="user_id" string="销售人员" widget="many2one_avatar_user" optional="show"/>
                 <field name="amount_total" string="总计" widget="monetary" options="{'currency_field': 'currency_id'}" optional="show"/>
                 <field name="wms_margin_amount" string="预计毛利" widget="monetary" options="{'currency_field': 'currency_id'}" optional="show"/>
                 <field name="wms_margin_rate" string="毛利率(%)" optional="show"/>
+                <field name="wms_stage" string="业务阶段" optional="show"/>
                 <field name="state" string="状态" widget="badge"
                     decoration-success="state == 'sale'"
                     decoration-info="state == 'draft'"
@@ -28,12 +32,16 @@
         <field name="model">purchase.order</field>
         <field name="arch" type="xml">
             <list string="采购订单" decoration-muted="state == 'cancel'">
+                <header>
+                    <button name="action_bulk_confirm_orders" type="object" string="批量确认" class="btn-secondary"/>
+                </header>
                 <field name="currency_id" column_invisible="True"/>
                 <field name="name" string="单号" decoration-bf="1"/>
                 <field name="date_order" string="订单日期"/>
                 <field name="partner_id" string="供应商"/>
                 <field name="user_id" string="采购员" widget="many2one_avatar_user" optional="show"/>
                 <field name="amount_total" string="总计" widget="monetary" options="{'currency_field': 'currency_id'}" optional="show"/>
+                <field name="wms_stage" string="业务阶段" optional="show"/>
                 <field name="state" string="状态" widget="badge"
                     decoration-success="state in ('purchase','done')"
                     decoration-info="state == 'draft'"
@@ -49,7 +57,28 @@
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//header" position="inside">
+            <xpath expr="//sheet" position="inside">
+                <div class="alert alert-info" role="alert" invisible="state == 'cancel'">
+                    当前阶段：<field name="wms_stage" readonly="1" nolabel="1"/>
+                    <br/>
+                    建议下一步：<field name="wms_next_step" readonly="1" nolabel="1"/>
+                </div>
+            </xpath>
+            <xpath expr="//header/button[1]" position="before">
+                <button string="取消并返回"
+                    special="cancel"
+                    class="btn-secondary"
+                    invisible="id"/>
+                <button name="%(custom_wms_base.action_custom_wms_sales_flow)d"
+                    type="action"
+                    string="返回列表"
+                    class="btn-secondary"
+                    invisible="not id"/>
+                <button name="action_apply_recent_template"
+                    type="object"
+                    string="套用最近客户模板"
+                    class="btn-secondary"
+                    invisible="not id or not partner_id or state not in ('draft', 'sent')"/>
                 <button name="action_confirm_and_open_delivery"
                     type="object"
                     string="确认并进入出库"
@@ -63,6 +92,7 @@
             </xpath>
             <xpath expr="//button[@name='action_cancel']" position="attributes">
                 <attribute name="groups">base.group_system,custom_wms_base.group_wms_feature_sales_order</attribute>
+                <attribute name="confirm">确认取消该销售单吗？取消后将影响后续出库任务。</attribute>
             </xpath>
             <xpath expr="//button[@name='action_draft']" position="attributes">
                 <attribute name="groups">base.group_system,custom_wms_base.group_wms_feature_sales_order</attribute>
@@ -70,7 +100,14 @@
             <xpath expr="//label[@for='pricelist_id']" position="attributes">
                 <attribute name="string">销售价格表</attribute>
             </xpath>
+            <xpath expr="//field[@name='partner_id']" position="attributes">
+                <attribute name="string">客户（销售对象）</attribute>
+            </xpath>
+            <xpath expr="//field[@name='pricelist_id']" position="after">
+                <field name="wms_customer_contract_id" readonly="1" optional="show"/>
+            </xpath>
             <xpath expr="//field[@name='order_line']/list/field[@name='price_subtotal'][1]" position="before">
+                <field name="wms_customer_contract_line_id" optional="hide"/>
                 <field name="wms_cost_unit" string="成本单价" optional="show"/>
                 <field name="wms_cost_subtotal" string="成本金额" optional="show"/>
                 <field name="wms_margin_amount" string="预计毛利" optional="show"/>
@@ -96,18 +133,58 @@
         <field name="inherit_id" ref="stock.view_picking_form"/>
         <field name="arch" type="xml">
             <xpath expr="//sheet" position="inside">
-                <div class="alert alert-info" role="alert" invisible="state != 'draft'">
-                    操作提示：库管通常不需要手工新建出入库单。请优先处理采购单/销售单自动生成的任务单。
-                    联系人：入库填供应商联系人，出库填客户联系人；作业类型：入库选“收货”，出库选“交货”。
+                <div class="alert alert-info" role="alert" invisible="state == 'cancel'">
+                    当前阶段：<field name="wms_stage" readonly="1" nolabel="1"/>
+                    <br/>
+                    建议下一步：<field name="wms_next_step" readonly="1" nolabel="1"/>
+                </div>
+                <div class="alert alert-success" role="alert" invisible="not origin">
+                    本单据由上游业务单自动生成（来源单号：<field name="origin" readonly="1" nolabel="1"/>）。
+                    建议按“核对商品和数量 → 点击验证”处理，不需要改“业务对象/作业类型”。
+                </div>
+                <div class="alert alert-info" role="alert" invisible="state != 'draft' or picking_type_code != 'incoming'">
+                    入库单说明：业务对象请填写供应商；作业类型请选择“收货”。
+                    常规场景建议先在“采购下单”中创建采购单，系统会自动生成入库任务。
+                </div>
+                <div class="alert alert-info" role="alert" invisible="state != 'draft' or picking_type_code != 'outgoing'">
+                    出库单说明：业务对象请填写客户；作业类型请选择“交货”。
+                    常规场景建议先在“销售订单”中创建销售单，系统会自动生成出库任务。
                 </div>
             </xpath>
             <xpath expr="//field[@name='partner_id']" position="attributes">
-                <attribute name="string">业务联系人（供应商/客户）</attribute>
+                <attribute name="string">业务对象（供应商/客户）</attribute>
+                <attribute name="readonly">state != 'draft' or origin</attribute>
             </xpath>
             <xpath expr="//field[@name='picking_type_id']" position="attributes">
-                <attribute name="string">作业类型（收货/交货）</attribute>
+                <attribute name="string">作业场景（收货/交货）</attribute>
+                <attribute name="readonly">state != 'draft' or origin</attribute>
             </xpath>
-            <xpath expr="//header" position="inside">
+            <xpath expr="//field[@name='scheduled_date']" position="attributes">
+                <attribute name="string">计划处理时间</attribute>
+            </xpath>
+            <xpath expr="//field[@name='origin']" position="attributes">
+                <attribute name="string">来源单号（采购单/销售单）</attribute>
+            </xpath>
+            <xpath expr="//header/button[1]" position="before">
+                <button string="取消并返回"
+                    special="cancel"
+                    class="btn-secondary"
+                    invisible="id"/>
+                <button name="action_back_to_operation_list"
+                    type="object"
+                    string="返回列表"
+                    class="btn-secondary"
+                    invisible="not id"/>
+                <button name="action_open_recommended_purchase"
+                    type="object"
+                    string="推荐：先去采购下单"
+                    class="btn-secondary"
+                    invisible="state != 'draft' or picking_type_code != 'incoming' or origin"/>
+                <button name="action_open_recommended_sales"
+                    type="object"
+                    string="推荐：先去销售下单"
+                    class="btn-secondary"
+                    invisible="state != 'draft' or picking_type_code != 'outgoing' or origin"/>
                 <button name="action_open_next_sales_step"
                     type="object"
                     string="下一步：去销售下单"
@@ -116,6 +193,7 @@
             </xpath>
             <xpath expr="//button[@name='action_cancel']" position="attributes">
                 <attribute name="groups">base.group_system,custom_wms_base.group_wms_feature_purchase_receipt,custom_wms_base.group_wms_feature_sales_delivery</attribute>
+                <attribute name="confirm">确认取消该出入库任务吗？取消后可能需要回到上游单据重新生成。</attribute>
             </xpath>
         </field>
     </record>

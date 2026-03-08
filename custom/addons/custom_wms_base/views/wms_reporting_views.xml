@@ -4,11 +4,15 @@
         <field name="name">custom.wms.stock.exception.list</field>
         <field name="model">custom.wms.stock.exception</field>
         <field name="arch" type="xml">
-            <list string="库存预警" default_order="status desc, shortage_rate desc">
+            <list string="库存预警" default_order="priority_rank asc, shortage_rate desc">
                 <header>
                     <button name="action_refresh_exceptions" type="object" string="刷新预警" class="btn-primary"/>
                 </header>
                 <field name="snapshot_time"/>
+                <field name="priority" widget="badge"
+                    decoration-danger="priority == 'p1'"
+                    decoration-warning="priority == 'p2'"
+                    decoration-info="priority == 'p3'"/>
                 <field name="status"/>
                 <field name="product_tmpl_id"/>
                 <field name="qty_available"/>
@@ -26,6 +30,10 @@
         <field name="arch" type="xml">
             <search string="库存预警">
                 <field name="product_tmpl_id"/>
+                <filter string="P1-紧急" name="p1" domain="[('priority', '=', 'p1')]"/>
+                <filter string="P2-重要" name="p2" domain="[('priority', '=', 'p2')]"/>
+                <filter string="P3-常规" name="p3" domain="[('priority', '=', 'p3')]"/>
+                <separator/>
                 <filter string="低库存" name="low" domain="[('status', '=', 'low')]"/>
                 <filter string="高库存" name="high" domain="[('status', '=', 'high')]"/>
                 <filter string="无成本价" name="missing_cost" domain="[('status', '=', 'cost_missing')]"/>

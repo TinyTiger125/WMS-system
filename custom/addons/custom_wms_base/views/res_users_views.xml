@@ -21,12 +21,16 @@
         <field name="model">res.users</field>
         <field name="inherit_id" ref="base.view_users_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//header" position="inside">
-                <button name="%(custom_wms_base.action_custom_wms_user_quick_create)d"
+            <xpath expr="//header/button[1]" position="before">
+                <button name="%(custom_wms_base.action_custom_wms_user_admin)d"
                     type="action"
-                    string="快速创建账号"
+                    string="返回列表"
                     class="btn-secondary"
+                    invisible="not id"
                     groups="base.group_system"/>
+            </xpath>
+            <xpath expr="//page[@name='access_rights']/group[1]" position="attributes">
+                <attribute name="invisible">1</attribute>
             </xpath>
             <xpath expr="//page[@name='access_rights']" position="inside">
                 <group string="WMS 统一权限中心（账号/角色/功能）" groups="base.group_system">
@@ -46,6 +50,7 @@
                         <field name="wms_role_warehouse"/>
                         <field name="wms_role_sales"/>
                         <field name="wms_role_service"/>
+                        <field name="wms_role_customer"/>
                     </group>
                     <group string="功能管理（可自由调配）">
                         <field name="wms_feature_workspace"/>
@@ -58,6 +63,7 @@
                         <field name="wms_feature_exception_center"/>
                         <field name="wms_feature_reporting"/>
                         <field name="wms_feature_service_ticket"/>
+                        <field name="wms_feature_customer_selfservice"/>
                     </group>
                     <group string="权限结果预览（自动计算）">
                         <field name="wms_can_purchase_order" readonly="1"/>
@@ -70,6 +76,23 @@
                         说明：角色用于快速套模板，功能开关用于精细化控制。
                     </div>
                 </group>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_users_form_wms_hide_invite_controls" model="ir.ui.view">
+        <field name="name">res.users.form.wms.hide.invite.controls</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header/button[@name='action_reset_password']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//header/field[@name='state']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//div[@name='auth']/button[@name='action_reset_password']" position="attributes">
+                <attribute name="invisible">1</attribute>
             </xpath>
         </field>
     </record>

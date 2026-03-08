@@ -54,19 +54,79 @@
         <field name="model">product.template</field>
         <field name="inherit_id" ref="product.product_template_only_form_view"/>
         <field name="arch" type="xml">
-            <xpath expr="//div[@name='button_box']" position="inside">
-                <button name="action_open_procurement_step"
-                    type="object"
-                    class="oe_stat_button"
-                    icon="fa-shopping-cart"
-                    string="下一步：采购下单"
-                    invisible="not id"/>
-                <button name="action_open_sales_step"
-                    type="object"
-                    class="oe_stat_button"
-                    icon="fa-line-chart"
-                    string="下一步：销售下单"
-                    invisible="not id"/>
+            <xpath expr="//form" position="attributes">
+                <attribute name="string">商品档案</attribute>
+            </xpath>
+            <xpath expr="//form/sheet" position="before">
+                <header>
+                    <button name="%(custom_wms_base.action_custom_wms_product_master)d"
+                        type="action"
+                        string="取消并返回"
+                        class="btn-secondary"
+                        invisible="id"/>
+                    <button name="%(custom_wms_base.action_custom_wms_product_master)d"
+                        type="action"
+                        string="返回列表"
+                        class="btn-secondary"
+                        invisible="not id"/>
+                    <button name="action_open_procurement_step"
+                        type="object"
+                        string="下一步：采购下单"
+                        class="btn-secondary"
+                        invisible="not id"/>
+                    <button name="action_open_sales_step"
+                        type="object"
+                        string="下一步：销售下单"
+                        class="btn-secondary"
+                        invisible="not id"/>
+                </header>
+            </xpath>
+            <xpath expr="//label[@for='name']" position="attributes">
+                <attribute name="string">商品名称</attribute>
+            </xpath>
+            <xpath expr="//field[@name='sale_ok']" position="attributes">
+                <attribute name="string">可销售</attribute>
+            </xpath>
+            <xpath expr="//field[@name='purchase_ok']" position="attributes">
+                <attribute name="string">可采购</attribute>
+            </xpath>
+            <xpath expr="//page[@name='general_information']" position="attributes">
+                <attribute name="string">基本信息</attribute>
+            </xpath>
+            <xpath expr="//page[@name='sales']" position="attributes">
+                <attribute name="string">销售</attribute>
+            </xpath>
+            <xpath expr="//page[@name='sales_price']" position="attributes">
+                <attribute name="string">价格规则</attribute>
+            </xpath>
+            <xpath expr="//page[@name='purchase']" position="attributes">
+                <attribute name="string">采购</attribute>
+            </xpath>
+            <xpath expr="//page[@name='inventory']" position="attributes">
+                <attribute name="string">库存</attribute>
+            </xpath>
+            <xpath expr="//group[@name='group_general']//field[@name='type']" position="attributes">
+                <attribute name="string">产品类型</attribute>
+            </xpath>
+            <xpath expr="//group[@name='group_standard_price']//field[@name='list_price']" position="attributes">
+                <attribute name="string">销售价</attribute>
+            </xpath>
+            <xpath expr="//group[@name='group_standard_price']//field[@name='standard_price']" position="attributes">
+                <attribute name="string">成本价</attribute>
+            </xpath>
+            <xpath expr="//group[@name='group_standard_price']//field[@name='categ_id']" position="attributes">
+                <attribute name="string">商品分类</attribute>
+            </xpath>
+            <xpath expr="//group[@name='internal_notes']" position="attributes">
+                <attribute name="string">内部备注</attribute>
+            </xpath>
+            <xpath expr="//group[@name='internal_notes']//field[@name='description']" position="attributes">
+                <attribute name="placeholder">仅内部使用，可记录采购备注或运营说明。</attribute>
+            </xpath>
+            <xpath expr="//page[@name='general_information']/group" position="before">
+                <div class="alert alert-info" role="alert">
+                    最小必填建议：商品名称、条码、销售价。规格/产地/海关信息可后补。
+                </div>
             </xpath>
             <xpath expr="//page[@name='general_information']" position="after">
                 <page string="商品扩展" name="custom_wms_extension">

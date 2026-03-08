@@ -1,13 +1,38 @@
 .o_web_client {
-    --wms-brand-1: #0f5e7f;
-    --wms-brand-2: #0a7a5f;
-    --wms-surface: #f4f7f9;
+    --wms-brand-1: #1f3a5f;
+    --wms-brand-2: #2c5f8a;
+    --wms-brand-soft: #e8f0f8;
+    --wms-accent: #3b82b6;
+    --wms-surface: #f3f5f8;
     --wms-card: #ffffff;
+    --wms-text-strong: #1d2b3a;
+    --o-brand-odoo: #2c5f8a;
+    --o-brand-primary: #2c5f8a;
+    --bs-primary: #2c5f8a;
+    --bs-primary-rgb: 44, 95, 138;
 }
 
 .o_web_client .o_main_navbar {
     background: linear-gradient(90deg, var(--wms-brand-1), var(--wms-brand-2));
     border-bottom: 0;
+}
+
+.o_web_client .o_main_navbar .o_menu_sections .dropdown-toggle,
+.o_web_client .o_main_navbar .o_menu_sections .o_nav_entry {
+    background-color: rgba(255, 255, 255, 0.08);
+    border-radius: 4px;
+}
+
+.o_web_client .o_main_navbar .o_menu_sections .dropdown-toggle:hover,
+.o_web_client .o_main_navbar .o_menu_sections .o_nav_entry:hover {
+    background-color: rgba(255, 255, 255, 0.16);
+}
+
+.o_web_client .o_main_navbar .o_menu_sections .dropdown.show .dropdown-toggle,
+.o_web_client .o_main_navbar .o_menu_sections .dropdown-toggle.active,
+.o_web_client .o_main_navbar .o_menu_sections .o_nav_entry.active {
+    background-color: #315f89 !important;
+    color: #f4f8fc !important;
 }
 
 .o_web_client .o_main_navbar .o_menu_sections .dropdown-toggle,
@@ -18,10 +43,16 @@
 }
 
 .o_web_client .o_action_manager {
-    background: radial-gradient(circle at top right, #e7f4ec 0, transparent 30%), var(--wms-surface);
+    background: radial-gradient(circle at top right, var(--wms-brand-soft) 0, transparent 30%), var(--wms-surface);
 }
 
 .o_web_client .o_control_panel .btn-primary {
+    background: var(--wms-brand-2);
+    border-color: var(--wms-brand-2);
+}
+
+.o_web_client .o_control_panel .btn-primary:hover,
+.o_web_client .o_form_view .btn-primary:hover {
     background: var(--wms-brand-1);
     border-color: var(--wms-brand-1);
 }
@@ -33,6 +64,61 @@
 }
 
 .o_web_client .o_list_view table thead th {
-    background: #eef4f7;
-    color: #1f3742;
+    background: #e7edf4;
+    color: var(--wms-text-strong);
+}
+
+.o_web_client .o_form_view .o_statusbar_status > .btn-primary {
+    background: var(--wms-accent);
+    border-color: var(--wms-accent);
+}
+
+.o_web_client .o_statusbar_status .btn-secondary,
+.o_web_client .o_statusbar_status .btn-light,
+.o_web_client .o_statusbar_status .btn {
+    border-color: #cdd9e6;
+}
+
+.o_web_client .btn-primary,
+.o_web_client .o_btn_primary {
+    background-color: var(--wms-brand-2);
+    border-color: var(--wms-brand-2);
+}
+
+.o_web_client .btn-primary:hover,
+.o_web_client .o_btn_primary:hover {
+    background-color: var(--wms-brand-1);
+    border-color: var(--wms-brand-1);
+}
+
+.o_web_client .nav-tabs .nav-link.active,
+.o_web_client .nav-tabs .nav-item.show .nav-link {
+    color: var(--wms-brand-2);
+    border-color: #d4deea #d4deea #fff;
+}
+
+.o_web_client .o-mail-Chatter-topbar button.btn-primary,
+.o_web_client .o-mail-Chatter-topbar .o_btn_primary {
+    background-color: var(--wms-brand-2);
+    border-color: var(--wms-brand-2);
+}
+
+.o_web_client .btn-outline-primary {
+    color: var(--wms-brand-2);
+    border-color: var(--wms-brand-2);
+}
+
+.o_web_client .btn-outline-primary:hover {
+    background-color: var(--wms-brand-2);
+    border-color: var(--wms-brand-2);
+}
+
+.o_web_client a.text-primary,
+.o_web_client .text-primary {
+    color: var(--wms-brand-2) !important;
+}
+
+.o_web_client .badge.text-bg-primary,
+.o_web_client .badge.bg-primary {
+    background: var(--wms-accent) !important;
 }

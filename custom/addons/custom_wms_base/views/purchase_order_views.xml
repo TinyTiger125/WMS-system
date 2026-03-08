@@ -5,7 +5,21 @@
         <field name="model">purchase.order</field>
         <field name="inherit_id" ref="purchase.purchase_order_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//header" position="inside">
+            <xpath expr="//header/button[1]" position="before">
+                <button string="取消并返回"
+                    special="cancel"
+                    class="btn-secondary"
+                    invisible="id"/>
+                <button name="%(custom_wms_base.action_custom_wms_purchase_flow)d"
+                    type="action"
+                    string="返回列表"
+                    class="btn-secondary"
+                    invisible="not id"/>
+                <button name="action_apply_recent_template"
+                    type="object"
+                    string="套用最近供应商模板"
+                    class="btn-secondary"
+                    invisible="not id or not partner_id or state not in ('draft', 'sent', 'to approve')"/>
                 <button name="action_confirm_and_open_receipt"
                     type="object"
                     string="确认并进入入库"
@@ -28,8 +42,28 @@
         <field name="model">purchase.order</field>
         <field name="inherit_id" ref="purchase.purchase_order_form"/>
         <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <div class="alert alert-info" role="alert" invisible="state == 'cancel'">
+                    当前阶段：<field name="wms_stage" readonly="1" nolabel="1"/>
+                    <br/>
+                    建议下一步：<field name="wms_next_step" readonly="1" nolabel="1"/>
+                </div>
+            </xpath>
+            <xpath expr="//field[@name='partner_id'][1]" position="attributes">
+                <attribute name="string">供应商（采购对象）</attribute>
+            </xpath>
+            <xpath expr="//field[@name='date_order'][1]" position="attributes">
+                <attribute name="string">下单时间</attribute>
+            </xpath>
+            <xpath expr="//field[@name='date_planned'][1]" position="attributes">
+                <attribute name="string">预计到货时间</attribute>
+            </xpath>
+            <xpath expr="//field[@name='origin'][1]" position="attributes">
+                <attribute name="string">来源说明</attribute>
+            </xpath>
             <xpath expr="//button[@name='button_cancel']" position="attributes">
                 <attribute name="groups">base.group_system,custom_wms_base.group_wms_feature_purchase_order</attribute>
+                <attribute name="confirm">确认取消该采购单吗？取消后将影响后续入库任务。</attribute>
             </xpath>
             <xpath expr="//button[@name='button_draft']" position="attributes">
                 <attribute name="groups">base.group_system,custom_wms_base.group_wms_feature_purchase_order</attribute>
